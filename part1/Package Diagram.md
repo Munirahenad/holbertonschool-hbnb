@@ -51,6 +51,7 @@ Client → API Services/Controllers (Presentation)
 → Database  
 → Response returns back through the same path
 
-**Created by**: Munirah Enad Alotaibi 
-**Project**: HBnB Evolution - Part 1
-**Date**: January 2026
+Created by: Munirah Enad Alotaibi  
+Project: HBnB Evolution - Part 1  
+Date: January 2026
+
