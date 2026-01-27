@@ -37,3 +37,22 @@ Client → API/Controllers → **HBnBFacade** → Domain Models/Services → Rep
 
 ## Detailed Packge Diagram
 ![Detailed Package Diagram](images/Detailed%20Package%20Diagram.png)
+
+## Explanatory Notes
+
+### Key Benefits
+- **Separation of Concerns:** Each layer has a clear responsibility, making the system easier to maintain and test.
+- **Facade Pattern:** Provides a single entry point to business logic, reducing coupling between layers.
+- **Scalability:** Layers can evolve independently and new features can be added with minimal impact.
+
+### Communication Flow
+Client → API Services/Controllers (Presentation)  
+→ **HBnBFacade** (Business Logic)  
+→ Domain Models (User/Place/Review/Amenity)  
+→ Repository/DAO (Persistence)  
+→ Database  
+→ Response returns back through the same path
+
+**Created by**: Munirah Enad Alotaibi 
+**Project**: HBnB Evolution - Part 1
+**Date**: January 2026
