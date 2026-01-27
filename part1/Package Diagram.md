@@ -30,4 +30,5 @@ The Facade provides a unified entry point to the business logic:
 Client → API/Controllers → **HBnBFacade** → Domain Models/Services → Repositories → Database → Response
 
 ## Package Diagram
+![Package Diagram](package_diagram.png)
 
