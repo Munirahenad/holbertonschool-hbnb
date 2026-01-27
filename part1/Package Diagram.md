@@ -35,3 +35,6 @@ Client → API/Controllers → **HBnBFacade** → Domain Models/Services → Rep
 ## High-Level Package Diagram
 ![Package Diagram](package_diagram.png)
 
+## Detailed Packge Diagram
+[![Detailed Package Diagram](Detailed%20Package%20Diagram.png)](Detailed%20Package%20Diagram.png)
+
