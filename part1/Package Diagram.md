@@ -36,4 +36,4 @@ Client → API/Controllers → **HBnBFacade** → Domain Models/Services → Rep
 ![Package Diagram](package_diagram.png)
 
 ## Detailed Packge Diagram
-![Detailed Package Diagram](PUT_IMAGE_URL_HERE)
+![Detailed Package Diagram](images/Detailed%20Package%20Diagram.png)
