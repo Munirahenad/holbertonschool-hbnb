@@ -54,5 +54,7 @@ Client → API Services/Controllers (Presentation)
 → Response returns back through the same path
 
 **Created by**: Munirah Enad Alotaibi 
+
 **Project**: HBnB Evolution - Part 1
+
 **Date**: January 2026
