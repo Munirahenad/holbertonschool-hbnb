@@ -32,8 +32,8 @@ Client → API/Controllers → **HBnBFacade** → Domain Models/Services → Rep
 <h3>Package Diagram</h3>
 <img src="./Diagrams/Package_diagran.png" width="850">
 
-<h3>Detailed Package Diagram</h3>
-<img src="./Diagrams/Detailed_Package_Diagram.png" width="850">
+![Detailed Package Diagram](./Detailed_Package_Diagram.png)
+
 
 **Create by:** Munirah Enad Alotaibi 
 **Project:** HBnB Evolution - Part 1 
