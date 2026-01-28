@@ -31,10 +31,10 @@ Client → API/Controllers → **HBnBFacade** → Domain Models/Services → Rep
 ## Diagrams
 
 ### Package Diagram
-![Package Diagram](./Diagrams/Package_diagram.png)
+<img src="./Diagrams/Package_diagram.png" alt="Package Diagram" width="850">
 
 ### Detailed Package Diagram
-![Detailed Package Diagram](./Diagrams/Detailed_Package_Diagram.png)
+<img src="./Diagrams/Detailed_Package_Diagram.png" alt="Detailed Package Diagram" width="850">
 
 
 Create by: Munirah Enad Alotaibi 
