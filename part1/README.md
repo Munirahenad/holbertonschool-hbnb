@@ -29,16 +29,15 @@ The Facade provides a unified entry point to the business logic:
 Client → API/Controllers → **HBnBFacade** → Domain Models/Services → Repositories → Database → Response
 
 ## Diagrams
-
 ### Package Diagram
-![Package Diagram](part1/Diagrams/Package_diagran.png)
+![Package Diagram](./Diagrams/Package_diagran.png)
 
 ### Detailed Package Diagram
-![Detailed Package Diagram](part1/Diagrams/Detailed_Package_Diagram.png)
+![Detailed Package Diagram](./Diagrams/Detailed_Package_Diagram.png)
 
 ؤ
-**Create by** :Munirah Enad Alotaibi 
-**Project**: HBnB Evolution - Part 1 - 0. High-Level Package Diagram
-**Date**: January 2026
+**Create by:** Munirah Enad Alotaibi 
+**Project:** HBnB Evolution - Part 1 
+**Date:** January 2026
 
 
