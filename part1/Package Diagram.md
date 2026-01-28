@@ -31,10 +31,51 @@ Client → API/Controllers → **HBnBFacade** → Domain Models/Services → Rep
 
 
 ## Package Diagram
-![Package Diagram](./image/package_diagram.jpeg)
+flowchart TB
 
-## Detailed Package Diagram
-![Detailed Package Diagram](./image/Detailed%20Package%20Diagram.jpeg)
+subgraph Presentation_Layer["Presentation Layer"]
+direction LR
+ApiService["API Service"]
+RouteHandlers["Route Handlers"]
+Controllers["Controllers"]
+end
+
+subgraph Business_Logic_Layer["Business Logic Layer"]
+direction TB
+HBnBFacade["HBnBFacade (Facade Pattern Interface)"]
+DomainModels["Domain Models"]
+User["User Model"]
+Place["Place Model"]
+Review["Review Model"]
+Amenity["Amenity Model"]
+end
+
+subgraph Persistence_Layer["Persistence Layer"]
+direction TB
+Repository["Repository Pattern"]
+DataMapper["ORM / Data Mappers"]
+Database[("Database")]
+end
+
+ApiService --> HBnBFacade
+RouteHandlers --> HBnBFacade
+Controllers --> HBnBFacade
+
+HBnBFacade --> DomainModels
+
+DomainModels --> User
+DomainModels --> Place
+DomainModels --> Review
+DomainModels --> Amenity
+
+User --> Place --> Review --> Amenity
+
+User --> Repository
+Place --> Repository
+Review --> Repository
+Amenity --> Repository
+
+Repository --> DataMapper --> Database
 
 ## Explanatory Notes
 
