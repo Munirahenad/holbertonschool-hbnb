@@ -34,6 +34,81 @@ Client → API/Controllers → **HBnBFacade** → Domain Models/Services → Rep
 <img src="./Diagrams/Detailed_Package_Diagram.png" alt="Detailed Package Diagram" style="max-width:100%; height:auto;">
 
 
+
+## 1. Detailed Class Diagram for Business Logic Layer
+## 📋 Class Diagram - Business Logic Layer
+## Class Diagram for HBnB Business Logic Layer
+
+
+
+
+
+
+
+## 📝 Classes Explanation:
+## 1. BaseEntity
+- Purpose: Base class providing common properties and methods for all entities
+
+- Identifier: UUID id - Unique identifier for each entity
+
+- Methods: Basic CRUD operations (create, save, update, delete)
+
+## 2. User
+- Purpose: Represents system users (both regular users and administrators)
+
+- Attributes: Personal information, email, password hash, admin status
+
+- Methods: Registration, profile management, account operations
+
+## 3. Place
+- Purpose: Represents rental properties or locations
+
+- Attributes: Title, description, price, geographical coordinates
+
+- Methods: Listing management for properties
+
+## 4. Review
+- Purpose: Represents user reviews and ratings for places
+
+- Attributes: Numerical rating, textual comment
+
+- Relationships: Linked to one User and one Place
+
+#3 5. Amenity
+- Purpose: Represents features and services available at places
+
+- Attributes: Name, description of the amenity
+
+- Methods: Amenity management operations
+
+## 🔗 Class Relationships:
+Relationship	Type	Description
+User → Place	Association (1-to-many)	One user can own multiple places
+User → Review	Association (1-to-many)	One user can write multiple reviews
+Place → Review	Association (1-to-many)	One place can have multiple reviews
+Place ↔ Amenity	Association (many-to-many)	One place can have multiple amenities, one amenity can be in multiple places
+BaseEntity ← Others	Inheritance	All entities inherit from BaseEntity
+
+## ⚙️ Design Principles Applied:
+- SRP (Single Responsibility Principle): Each class has a single, well-defined responsibility
+
+- DRY (Don't Repeat Yourself): BaseEntity prevents code duplication across entities
+
+- Clear Relationship Definition: Proper multiplicity specification for each association
+
+- Unique Identifiers: UUID4 ensures global uniqueness for entity identification
+
+- Consistent Naming: Standardized naming conventions for attributes and methods
+
+## 📊 Multiplicity Notations:
+"1" → Exactly one
+
+"0..*" → Zero or more
+
+"1..*" → One or more
+
+
+
 Create by: Munirah Enad Alotaibi 
 
 Project: HBnB Evolution - Part 1 
