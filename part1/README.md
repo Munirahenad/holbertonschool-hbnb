@@ -3,13 +3,25 @@
 Part 1 documents the **HBnB Evolution web app** architecture and core entities (**User, Place, Review, Amenity**). It includes UML diagrams: a **Facade-based package diagram**, a **Business Logic class diagram**, and **sequence diagrams** for key API flows. This serves as the blueprint for the next phases.
 
 ## 📋 Contents
-## 📋 Contents
 
 ### Task 0: High-Level Package Diagram
 
 **File:** [package-diagram.md](./package-diagram.md)  
 **Responsible:** Munirah Enad Alotaibi
 **Description:** Illustrates the three-layer architecture (Presentation, Business Logic, Persistence) and how the Facade pattern enables communication between layers.
+### Task 1: Detailed Class Diagram for Business Logic Layer
+**File:**  
+**Responsible:** Maryam Alessa 
+**Description:** 
+### Task 2: Sequence Diagrams for API Calls
+**File:**  
+**Responsible:** Amal Asiri 
+**Description:** 
+### Task 3: Documentation Compilation
+**File:**  
+**Responsible:** Team Collaboration
+**Description:** We compiled all diagrams and technical specifications into a polished PDF, including clear explanatory notes to support the overall documentation.
+
 ## 🏛️ Architecture Overview
 ### Three-Layer Architecture
 
@@ -82,8 +94,12 @@ Part 1 documents the **HBnB Evolution web app** architecture and core entities (
 |------|----------------|---------|
 | Munirah Alotaibi | Package Diagram | muneraenad@hotmail.com |
 | Maryam Alessa | Class Diagram | — |
-| Amal Alasiri | Sequence Diagrams | — |
+| Amal Aasiri | Sequence Diagrams | — |
+
+```
 **Organization:** Holberton School Saudi Arabia
+
+
 
 
 
