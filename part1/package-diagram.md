@@ -1,6 +1,6 @@
-**0. High-Level Package Diagram**
+## **0. High-Level Package Diagram**
 **Overview:** The diagram outlines the Presentation, Business Logic, and Persistence layers and highlights the Facade as the main bridge between the API and domain logic.
-## Architecture Layers (HBnB — High-Level Package Diagram)
+**Architecture Layers (HBnB — High-Level Package Diagram)**
 **Diagram Tool:** Mermaid.js (UML Package Diagram)
 
 ### 1) Presentation Layer (Services & API)
@@ -63,7 +63,10 @@ The **Facade** provides a unified interface between the **Presentation Layer** a
 - Reduces coupling and dependencies (Presentation does not directly access domain models or persistence components)
 - Centralizes access to business logic through the Facade
 - Improves maintainability and testability by isolating layer interactions behind a stable interface
-**Package Diagram**
+
+
+## **Package Diagram**
+![package diagram](./package-diagram.png)
 
   ## Why This Architecture?
 
