@@ -241,3 +241,13 @@ Data is transformed at each layer boundary:
 - Pagination is implemented to handle large result sets efficiently
 - Business rules are enforced at the Business Logic Layer
 - Each layer has clear, separated responsibilities following the separation of concerns principle
+
+---
+
+## 👥 Authors
+**Amaal Asiri** – Holberton School Student as part of a group project 
+
+---
+
+## 📄 License
+This project is open source and intended for educational purposes as part of the Holberton School curriculum.
