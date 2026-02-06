@@ -29,7 +29,7 @@ The `BaseEntity` class serves as a foundation for all domain entities, implement
 ### 1.3 Class Diagram
 The detailed class diagram illustrates all entity models, their attributes, methods, and relationships, showing how each entity inherits from BaseEntity:
 
-<img src="Diagrams/Class_Diagram.png" width="600">
+<img src="Class-Diagram.png" width="800">
 
 ## 1.4 Entity Descriptions
 
@@ -220,6 +220,9 @@ Place "*" -- "*" Amenity : has
 **Implementation:**  
 Managed through `addAmenity()` and `removeAmenity()` methods in the `Place` class.
 
+---
 Created by: Maryam Alessa
+
 Project: HBnB Evolution - Part 1
+
 Date: Feb 2026
