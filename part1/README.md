@@ -12,9 +12,11 @@ Part 1 documents the **HBnB Evolution web app** architecture and core entities (
 **Description:** Illustrates the three-layer architecture (Presentation, Business Logic, Persistence) and how the Facade pattern enables communication between layers.
 ### Task 1: Detailed Class Diagram for Business Logic Layer
 **File:**  [Class-Diagram.md](./Class-Diagram.md)
+
 **Responsible:** Maryam Alessa 
 
-**Description:** 
+**Description:** Illustrates the Detailed Class Diagram of the Business Logic Layer, showing all core domain entities of the system along with their attributes, methods, and relationships (such as association, composition, and multiplicity). It demonstrates how business rules are implemented and how interactions between objects are structured within the system.
+
 ### Task 2: Sequence Diagrams for API Calls
 **File:**  
 **Responsible:** Amal Asiri 
