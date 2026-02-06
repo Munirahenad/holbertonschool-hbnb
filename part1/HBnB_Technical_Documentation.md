@@ -757,3 +757,16 @@ Development teams should:
 - [RESTful API Design Best Practices](https://restfulapi.net/)
 - [Facade Pattern Documentation](https://refactoring.guru/design-patterns/facade)
 - [Three-Tier Architecture Guide](https://www.ibm.com/topics/three-tier-architecture)
+
+---
+
+## 👥 Authors
+**Amaal Asiri**,
+**Maryam Alessa**,
+**Munirah Alotaibi** 
+– A group project as part of Holberton School curriculum.
+
+---
+
+## 📄 License
+This project is open source and intended for educational purposes as part of the Holberton School curriculum.
