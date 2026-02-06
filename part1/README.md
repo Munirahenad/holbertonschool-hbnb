@@ -100,7 +100,7 @@ Part 1 documents the **HBnB Evolution web app** architecture and core entities (
 |------|----------------|---------|
 | Munirah Alotaibi | Package Diagram | muneraenad@hotmail.com |
 | Maryam Alessa | Class Diagram |roro13188@gmail.com |
-| Amal Aasiri | Sequence Diagrams | — |
+| Amaal Aasiri | Sequence Diagrams | amaalmoasiri@gmail.com |
 
 
 
