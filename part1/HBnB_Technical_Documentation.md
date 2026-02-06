@@ -256,9 +256,12 @@ classDiagram
         #id: UUID4
         #created_at: DateTime
         #updated_at: DateTime
-        +validate()
-        +toDict()
-        +updateTimestamp()
+        +getId() String
+        +getCreatedAt() DateTime
+        +getUpdatedAt() DateTime
+        +updateTimestamp() void
+        +toDict() Dictionary
+        +validate() bool
     }
     
     class User {
