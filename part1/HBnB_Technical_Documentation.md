@@ -765,8 +765,3 @@ Development teams should:
 **Maryam Alessa**,
 **Munirah Alotaibi** 
 – A group project as part of Holberton School curriculum.
-
----
-
-## 📄 License
-This project is open source and intended for educational purposes as part of the Holberton School curriculum.
