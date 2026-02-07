@@ -25,7 +25,7 @@ Part 1 documents the **HBnB Evolution web app** architecture and core entities (
 **Description:** This document contains sequence diagrams for four critical API operations in the HBnB application, illustrating the flow of interactions across the API/Services Layer, Business Logic Layer, and Database Layer.
 
 ### Task 3: Documentation Compilation
-**File:**  
+**File:**  [HBnB_Technical_Documentation.pdf](./HBnB_Technical_Documentation.pdf)  
 **Responsible:** Team Collaboration
 
 **Description:** We compiled all diagrams and technical specifications into a polished PDF, including clear explanatory notes to support the overall documentation.
