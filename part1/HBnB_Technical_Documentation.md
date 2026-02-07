@@ -58,194 +58,142 @@ The HBnB application follows a **three-layer architecture** pattern that promote
 
 ### 2.2 Package Diagram
 
-```mermaid
-graph TB
-    subgraph PresentationLayer["Presentation Layer (API/Services)"]
-        API[RESTful API<br/>- User Endpoints<br/>- Place Endpoints<br/>- Review Endpoints<br/>- Amenity Endpoints]
-        Services[Services<br/>- Request/Response Handlers<br/>- Input Validation<br/>- Serialization]
-    end
-    
-    subgraph BusinessLogicLayer["Business Logic Layer"]
-        Facade[Facade Pattern<br/>Unified Interface]
-        Models[Domain Models<br/>- User<br/>- Place<br/>- Review<br/>- Amenity]
-        Rules[Business Rules<br/>& Validation]
-    end
-    
-    subgraph PersistenceLayer["Persistence Layer"]
-        Repos[Repositories/DAOs<br/>- UserRepository<br/>- PlaceRepository<br/>- ReviewRepository<br/>- AmenityRepository]
-        DB[(Database)]
-    end
-    
-    API --> Facade
-    Services --> Facade
-    Facade --> Models
-    Facade --> Rules
-    Models --> Repos
-    Rules --> Repos
-    Repos --> DB
-    
-    style Facade fill:#e1f5ff,stroke:#01579b,stroke-width:3px
-    style PresentationLayer fill:#f3e5f5,stroke:#4a148c
-    style BusinessLogicLayer fill:#e8f5e9,stroke:#1b5e20
-    style PersistenceLayer fill:#fff3e0,stroke:#e65100
-```
+![package diagram](./package-diagram.png)
+
 
 ### 2.3 Architecture Layers
 
-#### 2.3.1 Presentation Layer (API/Services)
+#### 2.3.1 Presentation Layer (Services & API)
 
-**Responsibility:** Handle user interaction and incoming HTTP requests
+**Responsibility:**  
+Act as the entry layer for the application, initiating requests into the system through its exposed components.
 
 **Key Components:**
-- **RESTful API Endpoints**: Routes and controllers for handling HTTP requests
-  - User endpoints: Registration, authentication, profile management
-  - Place endpoints: CRUD operations for property listings
-  - Review endpoints: Submission and retrieval of reviews
-  - Amenity endpoints: Management of property features
-  
-- **Services**: Request/response handlers and orchestration
-  - Input validation at the API boundary
-  - Serialization/deserialization (JSON ↔ objects)
-  - Authentication and authorization
-  - Error handling and HTTP status codes
+- **API Endpoints**  
+  The external entry points used to access the application.
+- **Services**  
+  Supporting presentation-level components that initiate and route calls to the business layer.
 
 **Communication:**
-- Communicates with Business Logic layer **only through the Facade**
-- Never directly accesses domain models or persistence components
-
+- **API Endpoints → (calls) → HBnB Facade**
+- **Services → (calls) → HBnB Facade**
+- The Presentation layer does not communicate directly with **Models** or **Persistence** in the diagram.
 ---
 
-#### 2.3.2 Business Logic Layer (Domain Models & Rules)
+#### 2.3.2 Business Logic Layer
 
-**Responsibility:** Implement core business rules and domain logic
+**Responsibility:**  
+Provide a unified business entry point and coordinate access to the domain model package.
 
 **Key Components:**
-- **Facade Pattern**: Unified entry point for application use-cases
-  - Simplifies communication between layers
-  - Provides single interface for business operations
-  - Reduces coupling between layers
-  
-- **Domain Models**: Core entities representing business concepts
-  - `User`: System users (owners and guests)
-  - `Place`: Property listings
-  - `Review`: User reviews and ratings
-  - `Amenity`: Property features and services
-  
-- **Business Rules & Validation**: Domain constraints and invariants
-  - User email uniqueness
-  - Review restrictions (no self-reviews, one review per place)
-  - Price and rating validations
-  - Coordinate validations
+- **HBnB Facade (Facade Pattern)**  
+  A single interface used by the Presentation layer to access the Business Logic layer.
+- **Models (Domain Models Package)**  
+  Core entities shown in the diagram:
+  - `User`
+  - `Place`
+  - `Review`
+  - `Amenity`
 
 **Communication:**
-- Receives requests from Presentation layer via the **Facade**
-- Interacts with Persistence layer through repositories/DAOs
-- Never directly accessed by Presentation layer
-
+- Receives calls from the Presentation layer via the **HBnB Facade**
+- **HBnB Facade → (orchestrates) → Models**
+- Models perform database-related actions through the Persistence layer (via repositories/DAOs as shown in the diagram)
 ---
 
-#### 2.3.3 Persistence Layer (Data Access)
+#### 2.3.3 Persistence Layer
 
-**Responsibility:** Manage data storage and retrieval
+**Responsibility:**  
+Handle data access and storage through dedicated persistence components.
 
 **Key Components:**
-- **Repositories/DAOs**: Data access components for each entity
-  - `UserRepository`: User data operations
-  - `PlaceRepository`: Place data operations
-  - `ReviewRepository`: Review data operations
-  - `AmenityRepository`: Amenity data operations
-  
-- **Database Operations**: CRUD and query execution
-  - SQL query construction and execution
-  - Transaction management
-  - Data integrity enforcement
-  
-- **Database**: Storage engine (relational database)
+- **Repositories / DAOs**  
+  The data access layer used by the business models to perform persistence operations.
+- **Database**  
+  The storage engine where application data is persisted.
 
 **Communication:**
-- Provides data access services to Business Logic layer
-- **Never** communicates directly with Presentation layer
-- Accessed only through repositories by business logic
-
+- **Models → (DB operations) → Repositories / DAOs**
+- **Repositories / DAOs → Database**
+- **Repositories / DAOs → (returns data) → Models**
+- The Persistence layer has no direct communication with the Presentation layer in the diagram.
 ---
 
 ### 2.4 The Facade Pattern
 
 #### 2.4.1 Purpose
-The Facade provides a **unified interface** between the Presentation Layer and the Business Logic Layer, acting as a single entry point for all business use-cases.
+In the diagram, the **HBnB Facade** is shown as an **interface** that serves as the single access point from the **Presentation layer** (API Endpoints and Services) into the **Business Logic layer**, coordinating access to the **Models** package.
 
-#### 2.4.2 Benefits
-✅ **Simplified Interface**: API layer has clear, simple methods to call  
-✅ **Reduced Coupling**: Presentation doesn't depend on internal business logic structure  
-✅ **Centralized Access**: Single point for managing business operations  
-✅ **Improved Maintainability**: Changes in business logic don't affect API  
-✅ **Better Testability**: Each layer can be tested independently  
+#### 2.4.2 Benefits (As Reflected by the Diagram)
+✅ **Single Entry Point:** Both API Endpoints and Services route calls through the Facade  
+✅ **Reduced Direct Dependencies:** Presentation does not connect directly to Models or Persistence  
+✅ **Coordinated Access:** The Facade **orchestrates** interactions with the Models package  
+✅ **Clear Layer Boundaries:** Communication follows one consistent path across layers
 
-#### 2.4.3 Communication Flow
+#### 2.4.3 Communication Flow (Based on the Diagram)
 
-```
-Client Request
-    ↓
-API/Services Layer (Presentation)
-    ↓
-Facade (Business Logic Entry Point)
-    ↓
-Domain Models & Business Rules
-    ↓
-Repositories/DAOs (Persistence)
-    ↓
+```text
+API Endpoints / Services (Presentation)
+           ↓  calls
+HBnB Facade (Business Logic)
+           ↓  orchestrates
+Models package (User, Place, Review, Amenity)
+           ↓  DB operations
+Repositories / DAOs (Persistence)
+           ↓
 Database
-    ↓
-Response flows back through same path
+
+Repositories / DAOs  → returns data →  Models
 ```
 
-### 2.5 Architectural Principles
+### 2.5 Architectural Notes (Based on the Diagram)
 
-#### 2.5.1 Separation of Concerns
-Each layer has distinct, non-overlapping responsibilities:
-- **Presentation**: HTTP protocol, request/response handling
-- **Business Logic**: Domain rules, entity management, validation
-- **Persistence**: Data storage, retrieval, integrity
+#### 2.5.1 Separation by Layers
+The system is grouped into three packages, each with a distinct role:
+- **Presentation (Services & API):** API Endpoints and Services that initiate calls into the system
+- **Business Logic:** HBnB Facade (interface) and the Models package (User, Place, Review, Amenity)
+- **Persistence:** Repositories/DAOs and the Database for data access and storage
 
-#### 2.5.2 Dependency Direction
-Dependencies flow in one direction (top to bottom):
-- Presentation → Business Logic (via Facade)
-- Business Logic → Persistence
-- Lower layers never depend on upper layers
+#### 2.5.2 Dependency and Communication Direction
+Communication follows the top-to-bottom path shown in the diagram:
+- **API Endpoints / Services → HBnB Facade**
+- **HBnB Facade → Models**
+- **Models → Repositories/DAOs → Database**
+Results return back through the repository layer:
+- **Repositories/DAOs → returns data → Models**
 
-#### 2.5.3 Interface Abstraction
-Layers interact through well-defined interfaces:
-- API uses Facade interface
-- Business Logic uses Repository interfaces
-- Enables easy replacement and unit testing with mocks
-
+#### 2.5.3 Interface-Based Interaction
+The diagram highlights interaction through clear entry points:
+- The **Presentation** layer connects to Business Logic through the **HBnB Facade (interface)**
+- Data access is routed through **Repositories/DAOs** between Models and the Database
 ---
 
 ## 3. Business Logic Layer - Detailed Class Diagram
 
 ### 3.1 Overview
-The Business Logic Layer contains the core domain models that represent the fundamental entities in the HBnB system. These models encapsulate both data and behavior, implementing business rules and maintaining relationships between entities.
+In the package diagram, the **Business Logic** layer contains the **Models** package, which represents the core domain entities of HBnB.  
+This section documents those domain models in detail, showing their attributes, behavior, and relationships to support the implementation phase.
 
 ### 3.2 BaseEntity Design
 
-All domain entities inherit from a common `BaseEntity` abstract class that provides fundamental functionality:
+All domain entities in the **Models** package inherit from a shared abstract base class: `BaseEntity`.  
+This base class provides common functionality required across entities:
 
 #### Purpose
-Foundation for all domain entities, implementing core requirements:
-- Unique identification via UUID4
-- Audit trail tracking with timestamps
-- Common validation and serialization methods
+- Ensure every entity has a **unique identifier** (UUID4)
+- Track an **audit trail** using timestamps (`created_at`, `updated_at`)
+- Provide a consistent foundation for shared utility behavior (e.g., basic validation/serialization helpers)
 
 #### Key Features
-- **Abstract Class**: Cannot be instantiated directly
-- **UUID Generation**: Automatic generation of unique identifiers
-- **Timestamp Management**: Tracks creation and modification times
-- **Common Interface**: Standard methods for all entities
+- **Abstract Base:** `BaseEntity` is an abstract class and cannot be instantiated directly.
+- **Unique Identification:** Automatically assigns a UUID4 identifier for each entity instance.
+- **Audit Timestamps:** Maintains `created_at` and `updated_at` to track creation and last update.
+- **Shared Entity Contract:** Provides a consistent base interface that all domain models inherit.
 
-#### Compliance with Requirements
-✅ **Unique IDs**: Each object has a UUID4 identifier  
-✅ **Audit Trail**: `created_at` and `updated_at` timestamps  
-✅ **Business Logic**: Common validation and serialization methods  
+#### Requirement Coverage
+✅ **Unique IDs:** Every entity includes a UUID4 identifier  
+✅ **Audit Trail:** `created_at` and `updated_at` are recorded for all entities  
+✅ **Common Functionality:** Shared validation/serialization helpers are defined at the base level
 
 ### 3.3 Class Diagram
 
