@@ -1,0 +1,1 @@
+"""Amenity model (placeholder)."""
