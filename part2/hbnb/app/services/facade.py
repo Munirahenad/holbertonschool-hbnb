@@ -1,19 +1,42 @@
 from app.persistence.repository import InMemoryRepository
+from app.models.user import User
 
 
 class HBnBFacade:
     def __init__(self):
         self.user_repo = InMemoryRepository()
-        self.place_repo = InMemoryRepository()
-        self.review_repo = InMemoryRepository()
-        self.amenity_repo = InMemoryRepository()
 
-    # Placeholder method for creating a user
     def create_user(self, user_data):
-        # Logic will be implemented in later tasks
-        pass
+        user = User(**user_data)
+        self.user_repo.add(user)
+        return user
 
-    # Placeholder method for fetching a place by ID
-    def get_place(self, place_id):
-        # Logic will be implemented in later tasks
-        pass
+    def get_user(self, user_id):
+        return self.user_repo.get(user_id)
+
+    def get_user_by_email(self, email):
+        return self.user_repo.get_by_attribute("email", email)
+
+    # NEW: list users
+    def get_users(self):
+        return self.user_repo.get_all()
+
+    # NEW: update user
+    def update_user(self, user_id, user_data):
+        user = self.user_repo.get(user_id)
+        if not user:
+            return None
+
+        # Email uniqueness check if email is being changed
+        if "email" in user_data and user_data["email"] != user.email:
+            existing = self.get_user_by_email(user_data["email"])
+            if existing and existing.id != user_id:
+                raise ValueError("Email already registered")
+
+        # Update allowed fields only
+        for field in ("first_name", "last_name", "email"):
+            if field in user_data:
+                setattr(user, field, user_data[field])
+
+        self.user_repo.update(user_id, user)
+        return user
