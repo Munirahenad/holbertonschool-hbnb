@@ -120,3 +120,65 @@ class HBnBFacade:
         place.save()
         self.place_repo.update(place_id, place)
         return place
+
+# ============= Review Methods (Task 5) Amaal Asiri =============
+
+    def create_review(self, review_data):
+        """Create a new review with validation."""
+        user = self.user_repo.get(review_data.get("user_id"))
+        if not user:
+            raise ValueError("User not found")
+
+        place = self.place_repo.get(review_data.get("place_id"))
+        if not place:
+            raise ValueError("Place not found")
+
+        review = Review(
+            rating=review_data.get("rating"),
+            comment=review_data.get("text", ""),
+            user=user,
+            place=place,
+        )
+        self.review_repo.add(review)
+        return review
+
+    def get_review(self, review_id):
+        """Retrieve a review by ID."""
+        return self.review_repo.get(review_id)
+
+    def get_all_reviews(self):
+        """Retrieve all reviews."""
+        return self.review_repo.get_all()
+
+    def get_reviews_by_place(self, place_id):
+        """Retrieve all reviews for a specific place."""
+        return [
+            r for r in self.review_repo.get_all()
+            if r.place.id == place_id
+        ]
+
+    def get_review_by_user_and_place(self, user_id, place_id):
+        """Check if a user has already reviewed a place."""
+        for review in self.review_repo.get_all():
+            if review.user.id == user_id and review.place.id == place_id:
+                return review
+        return None
+
+    def update_review(self, review_id, review_data):
+        """Update a review's text and rating."""
+        review = self.review_repo.get(review_id)
+        if not review:
+            return None
+
+        if "rating" in review_data:
+            review.rating = review_data["rating"]
+        if "text" in review_data:
+            review.comment = review_data["text"]
+
+        review.save()
+        self.review_repo.update(review_id, review)
+        return review
+
+    def delete_review(self, review_id):
+        """Delete a review by ID."""
+        self.review_repo.delete(review_id)
