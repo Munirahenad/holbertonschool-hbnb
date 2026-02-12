@@ -70,3 +70,53 @@ class HBnBFacade:
         amenity.save()
         self.amenity_repo.update(amenity_id, amenity)
         return amenity
+
+# ============= Place Methods (Task 4) Amaal Asiri =============
+
+    def create_place(self, place_data):
+        """Create a new place with validation."""
+        owner = self.user_repo.get(place_data.get("owner_id"))
+        if not owner:
+            raise ValueError("Owner not found")
+
+        place = Place(
+            title=place_data.get("title"),
+            description=place_data.get("description", ""),
+            price=place_data.get("price"),
+            latitude=place_data.get("latitude"),
+            longitude=place_data.get("longitude"),
+            owner=owner,
+        )
+        self.place_repo.add(place)
+        return place
+
+    def get_place(self, place_id):
+        """Retrieve a place by ID including owner and amenities."""
+        return self.place_repo.get(place_id)
+
+    def get_all_places(self):
+        """Retrieve all places."""
+        return self.place_repo.get_all()
+
+    def update_place(self, place_id, place_data):
+        """Update a place's information."""
+        place = self.place_repo.get(place_id)
+        if not place:
+            return None
+
+        # Updatable fields with validation via setters
+        updatable = ("title", "description", "price", "latitude", "longitude")
+        for field in updatable:
+            if field in place_data:
+                setattr(place, field, place_data[field])
+
+        # Update owner if provided
+        if "owner_id" in place_data:
+            owner = self.user_repo.get(place_data["owner_id"])
+            if not owner:
+                raise ValueError("Owner not found")
+            place.owner = owner
+
+        place.save()
+        self.place_repo.update(place_id, place)
+        return place
