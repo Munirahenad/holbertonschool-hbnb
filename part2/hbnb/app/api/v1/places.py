@@ -1,6 +1,5 @@
 #!/usr/bin/python3
-#Amaal-Asiri
-"""Place API endpoints - Task 4 (updated in Task 5 to include reviews)"""
+"""Place API endpoints - Task 4 + Task 5 updates"""
 
 from flask_restx import Namespace, Resource, fields
 from app.services import facade
@@ -24,11 +23,11 @@ user_model = api.model("PlaceUser", {
 review_model = api.model("PlaceReview", {
     "id": fields.String(description="Review ID"),
     "text": fields.String(description="Text of the review"),
-    "rating": fields.Integer(description="Rating (1-5)"),
-    "user_id": fields.String(description="ID of the reviewer"),
+    "rating": fields.Integer(description="Rating of the place (1-5)"),
+    "user_id": fields.String(description="ID of the user"),
 })
 
-# ============= Place Models =============
+# ============= Place Input Model =============
 
 place_model = api.model("Place", {
     "title": fields.String(required=True, description="Title of the place"),
@@ -37,8 +36,12 @@ place_model = api.model("Place", {
     "latitude": fields.Float(required=True, description="Latitude of the place"),
     "longitude": fields.Float(required=True, description="Longitude of the place"),
     "owner_id": fields.String(required=True, description="ID of the owner"),
+    "owner": fields.Nested(user_model, description="Owner of the place"),
     "amenities": fields.List(
-        fields.String, required=False, description="List of amenity IDs"
+        fields.Nested(amenity_model), description="List of amenities"
+    ),
+    "reviews": fields.List(
+        fields.Nested(review_model), description="List of reviews"
     ),
 })
 
@@ -64,6 +67,10 @@ class PlaceList(Resource):
 
         # Validate amenities exist (if provided)
         amenity_ids = place_data.get("amenities", [])
+        # Handle both list of strings and list of dicts
+        if amenity_ids and isinstance(amenity_ids[0], dict):
+            amenity_ids = [a["id"] for a in amenity_ids]
+
         amenities = []
         for amenity_id in amenity_ids:
             amenity = facade.get_amenity(amenity_id)
@@ -97,7 +104,7 @@ class PlaceList(Resource):
         ], 200
 
 
-@api.route("/<string:place_id>")
+@api.route("/<place_id>")
 @api.param("place_id", "The place identifier")
 class PlaceResource(Resource):
     """Place item resource"""
@@ -110,6 +117,8 @@ class PlaceResource(Resource):
         place = facade.get_place(place_id)
         if not place:
             return {"error": "Place not found"}, 404
+
+        reviews = facade.get_reviews_by_place(place_id)
 
         return {
             "id": place.id,
@@ -128,8 +137,15 @@ class PlaceResource(Resource):
                 {"id": a.id, "name": a.name}
                 for a in place.amenities
             ],
-            "created_at": place.created_at.isoformat(),
-            "updated_at": place.updated_at.isoformat(),
+            "reviews": [
+                {
+                    "id": r.id,
+                    "text": r.comment,
+                    "rating": r.rating,
+                    "user_id": r.user.id if r.user else None,
+                }
+                for r in reviews
+            ],
         }, 200
 
     @api.doc("update_place")
@@ -151,9 +167,11 @@ class PlaceResource(Resource):
                 return {"error": "Owner not found"}, 404
 
         if "amenities" in place_data:
-            for amenity_id in place_data["amenities"]:
-                amenity = facade.get_amenity(amenity_id)
-                if not amenity:
+            amenity_ids = place_data["amenities"]
+            if amenity_ids and isinstance(amenity_ids[0], dict):
+                amenity_ids = [a["id"] for a in amenity_ids]
+            for amenity_id in amenity_ids:
+                if not facade.get_amenity(amenity_id):
                     return {"error": f"Amenity {amenity_id} not found"}, 404
 
         try:
@@ -167,7 +185,10 @@ class PlaceResource(Resource):
         return {"message": "Place updated successfully"}, 200
 
 
-@api.route("/<string:place_id>/reviews")
+# ============= Reviews for a Place (Task 5) =============
+# Must be in places.py to keep correct route under places namespace
+
+@api.route("/<place_id>/reviews")
 @api.param("place_id", "The place identifier")
 class PlaceReviewList(Resource):
     """Reviews for a specific place"""
@@ -187,7 +208,6 @@ class PlaceReviewList(Resource):
                 "id": r.id,
                 "text": r.comment,
                 "rating": r.rating,
-                "user_id": r.user.id if r.user else None,
             }
             for r in reviews
         ], 200
