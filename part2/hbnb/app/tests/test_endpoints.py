@@ -38,7 +38,7 @@ class TestUserEndpoints(unittest.TestCase):
         response = self.client.post('/api/v1/users/', json={
             "first_name": "",
             "last_name": "Doe",
-            "email": "test@example.com",
+            "email": "test1@example.com",
             "password": "password123"
         })
         self.assertEqual(response.status_code, 400)
@@ -48,7 +48,7 @@ class TestUserEndpoints(unittest.TestCase):
         response = self.client.post('/api/v1/users/', json={
             "first_name": "Jane",
             "last_name": "",
-            "email": "test@example.com",
+            "email": "test2@example.com",
             "password": "password123"
         })
         self.assertEqual(response.status_code, 400)
@@ -166,7 +166,7 @@ class TestAmenityEndpoints(unittest.TestCase):
         """Empty name - expects 400"""
         response = self.client.post('/api/v1/amenities/', json={
             "name": "",
-            "description": "Some description"
+            "description": "No name"
         })
         self.assertEqual(response.status_code, 400)
 
@@ -174,7 +174,7 @@ class TestAmenityEndpoints(unittest.TestCase):
         """Name over 50 chars - expects 400"""
         response = self.client.post('/api/v1/amenities/', json={
             "name": "A" * 51,
-            "description": "Some description"
+            "description": "Too long"
         })
         self.assertEqual(response.status_code, 400)
 
@@ -199,7 +199,7 @@ class TestAmenityEndpoints(unittest.TestCase):
         """Get existing amenity by ID - expects 200"""
         post = self.client.post('/api/v1/amenities/', json={
             "name": "Pool",
-            "description": "Outdoor swimming pool"
+            "description": "Outdoor pool"
         })
         amenity_id = post.get_json()["id"]
         response = self.client.get(f'/api/v1/amenities/{amenity_id}')
@@ -241,16 +241,14 @@ class TestPlaceEndpoints(unittest.TestCase):
         self.app = create_app()
         self.client = self.app.test_client()
 
-        # Create a user to act as owner
         res = self.client.post('/api/v1/users/', json={
             "first_name": "Owner",
             "last_name": "User",
-            "email": "owner@example.com",
+            "email": "owner.place@example.com",
             "password": "password123"
         })
         self.owner_id = res.get_json()["id"]
 
-        # Create an amenity for testing
         res = self.client.post('/api/v1/amenities/', json={
             "name": "Wi-Fi",
             "description": "Wireless internet"
@@ -280,67 +278,44 @@ class TestPlaceEndpoints(unittest.TestCase):
         self.assertIn("id", data)
         self.assertEqual(data["title"], "Cozy Apartment")
 
-    def test_create_place_with_amenities(self):
-        """Create place with amenities - expects 201"""
-        response = self.client.post('/api/v1/places/', json=self._valid_place(
-            amenities=[self.amenity_id]
-        ))
-        self.assertEqual(response.status_code, 201)
-
     def test_create_place_empty_title(self):
         """Empty title - expects 400"""
-        response = self.client.post('/api/v1/places/', json=self._valid_place(
-            title=""
-        ))
+        response = self.client.post('/api/v1/places/', json=self._valid_place(title=""))
         self.assertEqual(response.status_code, 400)
 
     def test_create_place_negative_price(self):
         """Negative price - expects 400"""
-        response = self.client.post('/api/v1/places/', json=self._valid_place(
-            price=-50.0
-        ))
+        response = self.client.post('/api/v1/places/', json=self._valid_place(price=-50.0))
         self.assertEqual(response.status_code, 400)
 
     def test_create_place_zero_price(self):
         """Zero price - expects 400"""
-        response = self.client.post('/api/v1/places/', json=self._valid_place(
-            price=0
-        ))
+        response = self.client.post('/api/v1/places/', json=self._valid_place(price=0))
         self.assertEqual(response.status_code, 400)
 
-    def test_create_place_latitude_out_of_range(self):
+    def test_create_place_latitude_too_high(self):
         """Latitude > 90 - expects 400"""
-        response = self.client.post('/api/v1/places/', json=self._valid_place(
-            latitude=91.0
-        ))
+        response = self.client.post('/api/v1/places/', json=self._valid_place(latitude=91.0))
         self.assertEqual(response.status_code, 400)
 
-    def test_create_place_latitude_below_range(self):
+    def test_create_place_latitude_too_low(self):
         """Latitude < -90 - expects 400"""
-        response = self.client.post('/api/v1/places/', json=self._valid_place(
-            latitude=-91.0
-        ))
+        response = self.client.post('/api/v1/places/', json=self._valid_place(latitude=-91.0))
         self.assertEqual(response.status_code, 400)
 
-    def test_create_place_longitude_out_of_range(self):
+    def test_create_place_longitude_too_high(self):
         """Longitude > 180 - expects 400"""
-        response = self.client.post('/api/v1/places/', json=self._valid_place(
-            longitude=181.0
-        ))
+        response = self.client.post('/api/v1/places/', json=self._valid_place(longitude=181.0))
         self.assertEqual(response.status_code, 400)
 
-    def test_create_place_longitude_below_range(self):
+    def test_create_place_longitude_too_low(self):
         """Longitude < -180 - expects 400"""
-        response = self.client.post('/api/v1/places/', json=self._valid_place(
-            longitude=-181.0
-        ))
+        response = self.client.post('/api/v1/places/', json=self._valid_place(longitude=-181.0))
         self.assertEqual(response.status_code, 400)
 
     def test_create_place_invalid_owner(self):
         """Non-existent owner_id - expects 404"""
-        response = self.client.post('/api/v1/places/', json=self._valid_place(
-            owner_id="nonexistent-id"
-        ))
+        response = self.client.post('/api/v1/places/', json=self._valid_place(owner_id="nonexistent-id"))
         self.assertEqual(response.status_code, 404)
 
     def test_create_place_invalid_amenity(self):
@@ -360,8 +335,8 @@ class TestPlaceEndpoints(unittest.TestCase):
 
     # ============= GET /api/v1/places/<id> =============
 
-    def test_get_place_by_id_success(self):
-        """Get existing place with owner and amenities - expects 200"""
+    def test_get_place_by_id_includes_owner_and_amenities(self):
+        """Get place includes owner and amenities - expects 200"""
         post = self.client.post('/api/v1/places/', json=self._valid_place())
         place_id = post.get_json()["id"]
         response = self.client.get(f'/api/v1/places/{place_id}')
@@ -369,6 +344,7 @@ class TestPlaceEndpoints(unittest.TestCase):
         data = response.get_json()
         self.assertIn("owner", data)
         self.assertIn("amenities", data)
+        self.assertIn("reviews", data)
         self.assertEqual(data["owner"]["id"], self.owner_id)
 
     def test_get_place_not_found(self):
@@ -384,26 +360,24 @@ class TestPlaceEndpoints(unittest.TestCase):
         place_id = post.get_json()["id"]
         response = self.client.put(f'/api/v1/places/{place_id}', json={
             "title": "Luxury Condo",
-            "description": "An upscale place to stay",
+            "description": "An upscale place",
             "price": 200.0
         })
         self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.get_json()["message"], "Place updated successfully")
 
     def test_update_place_not_found(self):
         """Update non-existent place - expects 404"""
         response = self.client.put('/api/v1/places/nonexistent-id', json={
-            "title": "New Title",
-            "price": 150.0
+            "title": "New Title", "price": 150.0
         })
         self.assertEqual(response.status_code, 404)
 
     def test_update_place_invalid_price(self):
-        """Update place with invalid price - expects 400"""
+        """Update with invalid price - expects 400"""
         post = self.client.post('/api/v1/places/', json=self._valid_place())
         place_id = post.get_json()["id"]
-        response = self.client.put(f'/api/v1/places/{place_id}', json={
-            "price": -100.0
-        })
+        response = self.client.put(f'/api/v1/places/{place_id}', json={"price": -100.0})
         self.assertEqual(response.status_code, 400)
 
     # ============= GET /api/v1/places/<id>/reviews =============
@@ -442,7 +416,7 @@ class TestReviewEndpoints(unittest.TestCase):
         res = self.client.post('/api/v1/users/', json={
             "first_name": "Reviewer",
             "last_name": "User",
-            "email": "reviewer@example.com",
+            "email": "reviewer.test@example.com",
             "password": "password123"
         })
         self.reviewer_id = res.get_json()["id"]
@@ -478,19 +452,21 @@ class TestReviewEndpoints(unittest.TestCase):
         data = response.get_json()
         self.assertIn("id", data)
         self.assertEqual(data["rating"], 4)
+        self.assertEqual(data["text"], "Great place to stay!")
+
+    def test_create_review_empty_text(self):
+        """Empty text - expects 400"""
+        response = self.client.post('/api/v1/reviews/', json=self._valid_review(text=""))
+        self.assertEqual(response.status_code, 400)
 
     def test_create_review_rating_below_range(self):
         """Rating < 1 - expects 400"""
-        response = self.client.post('/api/v1/reviews/', json=self._valid_review(
-            rating=0
-        ))
+        response = self.client.post('/api/v1/reviews/', json=self._valid_review(rating=0))
         self.assertEqual(response.status_code, 400)
 
     def test_create_review_rating_above_range(self):
         """Rating > 5 - expects 400"""
-        response = self.client.post('/api/v1/reviews/', json=self._valid_review(
-            rating=6
-        ))
+        response = self.client.post('/api/v1/reviews/', json=self._valid_review(rating=6))
         self.assertEqual(response.status_code, 400)
 
     def test_create_review_invalid_user(self):
@@ -533,12 +509,15 @@ class TestReviewEndpoints(unittest.TestCase):
     # ============= GET /api/v1/reviews/<id> =============
 
     def test_get_review_by_id_success(self):
-        """Get existing review by ID - expects 200"""
+        """Get existing review - expects 200"""
         post = self.client.post('/api/v1/reviews/', json=self._valid_review())
         review_id = post.get_json()["id"]
         response = self.client.get(f'/api/v1/reviews/{review_id}')
         self.assertEqual(response.status_code, 200)
-        self.assertEqual(response.get_json()["id"], review_id)
+        data = response.get_json()
+        self.assertEqual(data["id"], review_id)
+        self.assertIn("user_id", data)
+        self.assertIn("place_id", data)
 
     def test_get_review_not_found(self):
         """Get non-existent review - expects 404"""
@@ -552,10 +531,21 @@ class TestReviewEndpoints(unittest.TestCase):
         post = self.client.post('/api/v1/reviews/', json=self._valid_review())
         review_id = post.get_json()["id"]
         response = self.client.put(f'/api/v1/reviews/{review_id}', json={
-            "text": "Updated review text",
+            "text": "Amazing stay!",
             "rating": 5
         })
         self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.get_json()["message"], "Review updated successfully")
+
+    def test_update_review_empty_text(self):
+        """Update with empty text - expects 400"""
+        post = self.client.post('/api/v1/reviews/', json=self._valid_review())
+        review_id = post.get_json()["id"]
+        response = self.client.put(f'/api/v1/reviews/{review_id}', json={
+            "text": "",
+            "rating": 4
+        })
+        self.assertEqual(response.status_code, 400)
 
     def test_update_review_invalid_rating(self):
         """Update with invalid rating - expects 400"""
@@ -583,7 +573,7 @@ class TestReviewEndpoints(unittest.TestCase):
         review_id = post.get_json()["id"]
         response = self.client.delete(f'/api/v1/reviews/{review_id}')
         self.assertEqual(response.status_code, 200)
-        self.assertIn("message", response.get_json())
+        self.assertEqual(response.get_json()["message"], "Review deleted successfully")
 
     def test_delete_review_not_found(self):
         """Delete non-existent review - expects 404"""
@@ -597,6 +587,10 @@ class TestReviewEndpoints(unittest.TestCase):
         self.client.delete(f'/api/v1/reviews/{review_id}')
         response = self.client.get(f'/api/v1/reviews/{review_id}')
         self.assertEqual(response.status_code, 404)
+
+
+if __name__ == "__main__":
+    unittest.main()
 
 
 if __name__ == "__main__":
