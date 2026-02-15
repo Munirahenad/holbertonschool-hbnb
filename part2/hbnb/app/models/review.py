@@ -18,7 +18,7 @@ class Review(BaseModel):
     def __init__(
         self,
         rating: int,
-        comment: str,
+        text: str,
         user: User,
         place: Place,
         **kwargs,
@@ -26,7 +26,7 @@ class Review(BaseModel):
         """Initialize a new Review."""
         super().__init__(**kwargs)
         self.rating = rating
-        self.comment = comment
+        self.text = text
         self.user = user
         self.place = place
 
@@ -35,8 +35,6 @@ class Review(BaseModel):
         if place:
             place.add_review(self)
 
-    # ============= Properties with Validation =============
-
     @property
     def rating(self) -> int:
         """Get rating."""
@@ -44,7 +42,6 @@ class Review(BaseModel):
 
     @rating.setter
     def rating(self, value: int):
-        """Set rating with validation (1-5)."""
         try:
             value = int(value)
             if value < 1 or value > 5:
@@ -54,16 +51,17 @@ class Review(BaseModel):
         self._rating = value
 
     @property
-    def comment(self) -> str:
-        """Get comment."""
-        return self._comment
+    def text(self) -> str:
+        """Get review text."""
+        return self._text
 
-    @comment.setter
-    def comment(self, value: str):
-        """Set comment with validation."""
+    @text.setter
+    def text(self, value: str):
+        if not value or not value.strip():
+            raise ValueError("text is required")
         if len(value) > 500:
-            raise ValueError("comment must be under 500 characters")
-        self._comment = value.strip() if value else ""
+            raise ValueError("text must be under 500 characters")
+        self._text = value.strip()
 
     @property
     def user(self) -> User:
@@ -72,7 +70,6 @@ class Review(BaseModel):
 
     @user.setter
     def user(self, value: User):
-        """Set user with validation."""
         if value is None:
             raise ValueError("user is required")
         self._user = value
@@ -84,66 +81,56 @@ class Review(BaseModel):
 
     @place.setter
     def place(self, value: Place):
-        """Set place with validation."""
         if value is None:
             raise ValueError("place is required")
         self._place = value
 
-    # ============= Business Methods (UML Compliance) =============
-
     def create(self) -> None:
-        """Create review. (+create() in UML)"""
+        """Create review."""
         self.save()
 
     def update(self, data: dict) -> None:
-        """Update review. (+update() in UML)"""
+        """Update review."""
         super().update(data)
 
     def delete(self) -> None:
-        """Delete review. (+delete() in UML)"""
+        """Delete review."""
         pass
 
     @staticmethod
     def list_by_place(place_id: str) -> list:
-        """List reviews by place. (+listByPlace(place_id): List in UML)"""
-        # This will be implemented by facade/repository
+        """List reviews by place."""
         return []
 
-    # ============= Validation =============
-
     def validate_rating(self) -> bool:
-        """Validate rating. (+validateRating() in UML)"""
+        """Validate rating."""
         return 1 <= self.rating <= 5
 
-    def validate_comment(self) -> bool:
-        """Validate comment. (+validateComment() in UML)"""
-        return len(self.comment) <= 500
+    def validate_text(self) -> bool:
+        """Validate review text."""
+        return len(self.text) <= 500
 
     def validate(self) -> bool:
-        """Validate review data. (+validate() in UML)"""
+        """Validate review data."""
         try:
             _ = self.rating
-            _ = self.comment
+            _ = self.text
             _ = self.user
             _ = self.place
             return True
         except (ValueError, AttributeError):
             return False
 
-    # ============= Serialization =============
-
     def to_dict(self) -> dict:
         """Convert review to dictionary."""
         base_dict = super().to_dict()
         base_dict.update({
             "rating": self.rating,
-            "comment": self.comment,
+            "text": self.text,
             "user_id": self.user.id if self.user else None,
             "place_id": self.place.id if self.place else None,
         })
         return base_dict
-
-    # ============= Magic Methods =============
 
     def __str__(self) -> str:
         """String representation."""
