@@ -16,14 +16,12 @@ facade = HBnBFacade()
 amenity_model = api.model("Amenity", {
     "id": fields.String(description="Amenity ID"),
     "name": fields.String(required=True, description="Amenity name"),
-    "description": fields.String(description="Amenity description"),
     "created_at": fields.String(description="Creation timestamp"),
     "updated_at": fields.String(description="Last update timestamp"),
 })
 
 amenity_create_model = api.model("AmenityCreate", {
     "name": fields.String(required=True, description="Amenity name"),
-    "description": fields.String(description="Amenity description", default=""),
 })
 
 
@@ -34,17 +32,20 @@ class AmenityList(Resource):
     """Amenity collection resource"""
 
     @api.doc("list_amenities")
+    @api.response(200, "List of amenities retrieved successfully")
     @api.marshal_list_with(amenity_model)
     def get(self):
-        """Get all amenities"""
+        """Retrieve a list of all amenities"""
         amenities = facade.get_all_amenities()
         return [amenity.to_dict() for amenity in amenities]
 
     @api.doc("create_amenity")
     @api.expect(amenity_create_model)
+    @api.response(201, "Amenity successfully created")
+    @api.response(400, "Invalid input data")
     @api.marshal_with(amenity_model, code=201)
     def post(self):
-        """Create a new amenity"""
+        """Register a new amenity"""
         amenity_data = request.json
         amenity = facade.create_amenity(amenity_data)
         return amenity.to_dict(), 201
@@ -57,9 +58,10 @@ class AmenityResource(Resource):
     """Amenity item resource"""
 
     @api.doc("get_amenity")
+    @api.response(200, "Amenity details retrieved successfully")
     @api.marshal_with(amenity_model)
     def get(self, amenity_id):
-        """Get an amenity by ID"""
+        """Get amenity details by ID"""
         amenity = facade.get_amenity(amenity_id)
         if not amenity:
             api.abort(404, f"Amenity {amenity_id} not found")
@@ -67,13 +69,12 @@ class AmenityResource(Resource):
 
     @api.doc("update_amenity")
     @api.expect(amenity_create_model)
-    @api.marshal_with(amenity_model)
+    @api.response(200, "Amenity updated successfully")
+    @api.response(400, "Invalid input data")
     def put(self, amenity_id):
-        """Update an amenity"""
+        """Update an amenity's information"""
         amenity_data = request.json
         amenity = facade.update_amenity(amenity_id, amenity_data)
         if not amenity:
             api.abort(404, f"Amenity {amenity_id} not found")
-        return amenity.to_dict()
-    
-    # DELETE not implemented - not required in Task 3
+        return {"message": "Amenity updated successfully"}, 200
