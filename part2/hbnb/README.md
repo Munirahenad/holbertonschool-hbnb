@@ -17,6 +17,7 @@ hbnb/
 │   │       └── amenities.py
 │   ├── models/
 │   │   ├── __init__.py
+│   │   ├─ base.py
 │   │   ├── user.py
 │   │   ├── place.py
 │   │   ├── review.py
