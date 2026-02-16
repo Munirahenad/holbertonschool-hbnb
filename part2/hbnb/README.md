@@ -65,4 +65,8 @@ Implement Amenity endpoints with Flask-RESTx: *POST* create, *GET* by ID, *GET* 
 
  ## Task 4 Summary (Amaal) 
 Build Place endpoints (**POST/GET/PUT + list**) via the **Facade**, validate **price/lat/lon**, and return Place data with related **owner + amenities**. *(No DELETE; reviews in Task 5.)*
+
+Implement Review endpoints (**POST/GET/PUT/DELETE**) via the **Facade**, validate review text and ensure each review is linked to a **user + place**. Update Places API to return the **reviews collection** for a place and support fetching all reviews for a specific place. *(DELETE is only for reviews in Part 2.)*
+
+
   
