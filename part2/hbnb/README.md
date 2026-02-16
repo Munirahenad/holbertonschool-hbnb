@@ -50,3 +50,8 @@ hbnb/
 - *Repo:* https://github.com/munirahenad/holbertonschool-hbnb (branch: main)
 - *Work Path:* part2/
 - *Reference Docs:* holpRefrence/ (detailed task instructions provided by the school)
+
+  ## Task 0 Summary  ( munirah )
+Initialize the HBnB project structure (Presentation/Business Logic/Persistence), set up Flask + Flask-RESTx, add an in-memory repository for temporary storage (to be replaced by SQLAlchemy in Part 3), and prepare the Facade pattern to connect the API with the core logic.
+
+  
