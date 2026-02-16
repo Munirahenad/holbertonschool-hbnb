@@ -65,9 +65,7 @@ class PlaceList(Resource):
         if not owner:
             return {"error": "Owner not found"}, 404
 
-        # Validate amenities exist (if provided)
         amenity_ids = place_data.get("amenities", [])
-        # Handle both list of strings and list of dicts
         if amenity_ids and isinstance(amenity_ids[0], dict):
             amenity_ids = [a["id"] for a in amenity_ids]
 
@@ -140,7 +138,7 @@ class PlaceResource(Resource):
             "reviews": [
                 {
                     "id": r.id,
-                    "text": r.comment,
+                    "text": r.text,
                     "rating": r.rating,
                     "user_id": r.user.id if r.user else None,
                 }
@@ -206,7 +204,7 @@ class PlaceReviewList(Resource):
         return [
             {
                 "id": r.id,
-                "text": r.comment,
+                "text": r.text,
                 "rating": r.rating,
             }
             for r in reviews
