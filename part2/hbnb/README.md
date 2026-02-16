@@ -32,6 +32,7 @@ hbnb/
 ├── config.py
 ├── requirements.txt
 └── README.md
+
 ```
 ## Overview
 - Build the Presentation and Business Logic layers based on the Part 1 design.
