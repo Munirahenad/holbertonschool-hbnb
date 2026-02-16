@@ -32,3 +32,8 @@ hbnb/
 ├── requirements.txt
 └── README.md
 ```
+## Overview
+- Build the Presentation and Business Logic layers based on the Part 1 design.
+- Implement core CRUD for User, Place, Amenity, and Review (DELETE is implemented only for Review).
+- Use an in-memory repository for persistence in Part 2 (database integration comes in Part 3).
+- Apply the Facade pattern to connect the API layer with the business logic and persistence layers.
