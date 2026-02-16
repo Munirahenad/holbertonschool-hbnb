@@ -1,12 +1,15 @@
 from app.persistence.repository import InMemoryRepository
 from app.models.user import User
 from app.models.amenity import Amenity
-
+from app.models.place import Place 
+from app.models.review import Review
 
 class HBnBFacade:
     def __init__(self):
         self.user_repo = InMemoryRepository()
         self.amenity_repo = InMemoryRepository()
+         self.place_repo = InMemoryRepository()
+        self.review_repo = InMemoryRepository() 
 
     # ============= User Methods (Task 2) =============
 
@@ -104,13 +107,11 @@ class HBnBFacade:
         if not place:
             return None
 
-        # Updatable fields with validation via setters
         updatable = ("title", "description", "price", "latitude", "longitude")
         for field in updatable:
             if field in place_data:
                 setattr(place, field, place_data[field])
 
-        # Update owner if provided
         if "owner_id" in place_data:
             owner = self.user_repo.get(place_data["owner_id"])
             if not owner:
