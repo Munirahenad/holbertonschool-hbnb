@@ -45,3 +45,8 @@ hbnb/
 | Munirah Enad Alotaibi | *Task 0, Task 2* | Project setup & package initialization (structure, Flask app scaffolding, in-memory repository, Facade placeholders). Implement *User endpoints* (POST/GET/PUT, list users), ensure *no password in responses*, correct status codes and Swagger docs. |
 | Maryam Alessa | *Task 1, Task 3* | Implement core business logic classes (User, Place, Review, Amenity) with required attributes, validation, and relationships. Implement *Amenity endpoints* (POST/GET/PUT), integrate with Facade and repository, ensure consistent serialization & Swagger. |
 | Amaal Asiri | *Task 4, Task 5, Task 6* | Implement *Place endpoints* (POST/GET/PUT) with validation (price/lat/lon) and related data (owner + amenities). Implement *Review endpoints* (POST/GET/PUT/DELETE) + retrieve reviews for a place + update place to include reviews. Perform *testing & validation* (cURL/Swagger + unit tests) and produce a testing report. |
+
+## Repository & References
+- *Repo:* https://github.com/munirahenad/holbertonschool-hbnb (branch: main)
+- *Work Path:* part2/
+- *Reference Docs:* holpRefrence/ (detailed task instructions provided by the school)
