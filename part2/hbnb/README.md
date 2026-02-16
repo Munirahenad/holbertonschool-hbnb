@@ -75,8 +75,11 @@ Test and validate all implemented endpoints: add basic input validation, run **b
 ## API Surface (v1)
 
 - **Users:** `GET /api/v1/users/`, `POST /api/v1/users/`, `GET /api/v1/users/<id>`, `PUT /api/v1/users/<id>`
+- 
 - **Amenities:** `GET /api/v1/amenities/`, `POST /api/v1/amenities/`, `GET /api/v1/amenities/<id>`, `PUT /api/v1/amenities/<id>`
+- 
 - **Places:** `GET /api/v1/places/`, `POST /api/v1/places/`, `GET /api/v1/places/<id>`, `PUT /api/v1/places/<id>`, `GET /api/v1/places/<id>/reviews`
+- 
 - **Reviews:** `GET /api/v1/reviews/`, `POST /api/v1/reviews/`, `GET /api/v1/reviews/<id>`, `PUT /api/v1/reviews/<id>`, `DELETE /api/v1/reviews/<id>`
 
 ## Setup
