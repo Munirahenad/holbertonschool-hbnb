@@ -54,4 +54,7 @@ hbnb/
   ## Task 0 Summary  ( munirah )
 Initialize the HBnB project structure (Presentation/Business Logic/Persistence), set up Flask + Flask-RESTx, add an in-memory repository for temporary storage (to be replaced by SQLAlchemy in Part 3), and prepare the Facade pattern to connect the API with the core logic.
 
+## Task 1 Summary (Maryam) 
+Implement the core HBnB models (User, Place, Review, Amenity) based on Part 1 design, including required attributes, validation, update methods, and relationships between entities (e.g., reviews linked to places, amenities associated with places).
+
   
