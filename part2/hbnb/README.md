@@ -60,6 +60,9 @@ Implement the core HBnB models (User, Place, Review, Amenity) based on Part 1 de
   ## Task 2 Summary (Munirah)
 Implement User endpoints with Flask-RESTx: *POST* create, *GET* by ID, *GET* list, *PUT* update. Connect API to Business Logic via *Facade/Repository, use correct status codes, and **exclude passwords* from all responses. (No DELETE for users in Part 2.)
 
-## Task 3 Summary ( Maryam) 
+   ## Task 3 Summary ( Maryam) 
 Implement Amenity endpoints with Flask-RESTx: *POST* create, *GET* by ID, *GET* list, and *PUT* update. Integrate API with Business Logic via the *Facade* pattern, use correct status codes, and document/test via Swagger/cURL. (No DELETE for amenities in Part 2.)
+
+ ## Task 4 Summary (Amaal) 
+Build Place endpoints (**POST/GET/PUT + list**) via the **Facade**, validate **price/lat/lon**, and return Place data with related **owner + amenities**. *(No DELETE; reviews in Task 5.)*
   
