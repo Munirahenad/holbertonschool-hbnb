@@ -39,7 +39,7 @@ hbnb/
 - Use an in-memory repository for persistence in Part 2 (database integration comes in Part 3).
 - Apply the Facade pattern to connect the API layer with the business logic and persistence layers.
 
-  ## Team & Task Allocation (Part 2)
+## Team & Task Allocation (Part 2)
 
 | Name | Tasks | Responsibilities / Deliverables |
 |---|---|---|
