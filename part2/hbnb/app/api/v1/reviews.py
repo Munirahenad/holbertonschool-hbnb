@@ -50,11 +50,9 @@ class ReviewList(Resource):
         if not place:
             return {"error": "Place not found"}, 404
 
-        # Business rule: user cannot review their own place
         if place.owner.id == user.id:
             return {"error": "You cannot review your own place"}, 400
 
-        # Business rule: user cannot review the same place twice
         existing = facade.get_review_by_user_and_place(
             review_data["user_id"], review_data["place_id"]
         )
@@ -68,7 +66,7 @@ class ReviewList(Resource):
 
         return {
             "id": review.id,
-            "text": review.comment,
+            "text": review.text,
             "rating": review.rating,
             "user_id": review.user.id,
             "place_id": review.place.id,
@@ -82,7 +80,7 @@ class ReviewList(Resource):
         return [
             {
                 "id": r.id,
-                "text": r.comment,
+                "text": r.text,
                 "rating": r.rating,
             }
             for r in reviews
@@ -105,7 +103,7 @@ class ReviewResource(Resource):
 
         return {
             "id": review.id,
-            "text": review.comment,
+            "text": review.text,
             "rating": review.rating,
             "user_id": review.user.id if review.user else None,
             "place_id": review.place.id if review.place else None,
@@ -124,7 +122,6 @@ class ReviewResource(Resource):
 
         review_data = api.payload
 
-        # Validate text is not empty
         if not review_data.get("text", "").strip():
             return {"error": "text is required"}, 400
 
