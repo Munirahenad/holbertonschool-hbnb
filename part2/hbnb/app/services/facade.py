@@ -8,7 +8,7 @@ class HBnBFacade:
     def __init__(self):
         self.user_repo = InMemoryRepository()
         self.amenity_repo = InMemoryRepository()
-         self.place_repo = InMemoryRepository()
+        self.place_repo = InMemoryRepository()
         self.review_repo = InMemoryRepository() 
 
     # ============= User Methods (Task 2) =============
@@ -174,7 +174,7 @@ class HBnBFacade:
         if "rating" in review_data:
             review.rating = review_data["rating"]
         if "text" in review_data:
-            review.comment = review_data["text"]
+            review.text = review_data["text"]
 
         review.save()
         self.review_repo.update(review_id, review)
