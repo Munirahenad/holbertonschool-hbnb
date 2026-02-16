@@ -84,4 +84,13 @@ Test and validate all implemented endpoints: add basic input validation, run **b
 git clone https://github.com/munirahenad/holbertonschool-hbnb.git
 cd holbertonschool-hbnb/part2/hbnb
 pip install -r requirements.txt
-python run.py  
+python run.py
+
+
+## Testing
+
+From inside `part2/hbnb`:
+
+Using `pytest`:
+```bash
+python -m pytest app/tests -v
