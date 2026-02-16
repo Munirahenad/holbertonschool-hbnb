@@ -94,7 +94,7 @@ From inside `part2/hbnb`:
 Using `pytest`:
 ```bash
 python -m pytest app/tests -v
-
+```
 
 ## Notes
 - In-memory storage is temporary; database integration will be added in Part 3.
