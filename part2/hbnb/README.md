@@ -68,5 +68,6 @@ Build Place endpoints (**POST/GET/PUT + list**) via the **Facade**, validate **p
 
 Implement Review endpoints (**POST/GET/PUT/DELETE**) via the **Facade**, validate review text and ensure each review is linked to a **user + place**. Update Places API to return the **reviews collection** for a place and support fetching all reviews for a specific place. *(DELETE is only for reviews in Part 2.)*
 
-
+## Task 6 Summary (Amaal) 
+Test and validate all implemented endpoints: add basic input validation, run **black-box tests** using **cURL + Swagger**, write automated tests (**pytest/unittest**), and produce a testing report covering successful cases and key edge/failure cases.
   
