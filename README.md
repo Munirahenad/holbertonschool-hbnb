@@ -68,3 +68,4 @@ This project is part of the Holberton School curriculum.
 
 ## Part 2: Flask REST API + Business Logic (Facade & In-Memory)
 
+## Project Overview (Part 2 Tasks)
