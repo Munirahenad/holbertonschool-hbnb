@@ -70,6 +70,7 @@ This project is part of the Holberton School curriculum.
 
 ## Project Overview (Part 2 Tasks)
 
-- *Task 0:* Initialize the project structure (Presentation/Business Logic/Persistence), set up Flask-RESTx, in-memory repository, and Facade skeleton.
-- *Task 1:* Implement core models (User, Place, Review, Amenity) with validation and relationships.
+- **Task 0:** Initialize the project structure (Presentation/Business Logic/Persistence), set up Flask-RESTx, in-memory repository, and Facade skeleton.
+- **Task 1:** Implement core models (User, Place, Review, Amenity) with validation and relationships.
+- **Task 2:** Build User endpoints (POST/GET/PUT + list) via Facade, excluding passwords from responses.
 - 
