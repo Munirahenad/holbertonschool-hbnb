@@ -65,3 +65,6 @@ This project is part of the Holberton School curriculum.
 - **Program:** Advanced Backend Specialization
 - **Project:** HBnB Evolution — Part 1 (Technical Documentation)
 - **Date:** February 2026
+
+## Part 2: Flask REST API + Business Logic (Facade & In-Memory)
+
