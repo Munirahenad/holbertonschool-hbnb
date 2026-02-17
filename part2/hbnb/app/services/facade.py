@@ -1,17 +1,18 @@
 from app.persistence.repository import InMemoryRepository
 from app.models.user import User
 from app.models.amenity import Amenity
-from app.models.place import Place 
+from app.models.place import Place
 from app.models.review import Review
+
 
 class HBnBFacade:
     def __init__(self):
         self.user_repo = InMemoryRepository()
         self.amenity_repo = InMemoryRepository()
         self.place_repo = InMemoryRepository()
-        self.review_repo = InMemoryRepository() 
+        self.review_repo = InMemoryRepository()
 
-    # ============= User Methods (Task 2) =============
+    # ============= User Methods =============
 
     def create_user(self, user_data):
         user = User(**user_data)
@@ -41,10 +42,11 @@ class HBnBFacade:
             if field in user_data:
                 setattr(user, field, user_data[field])
 
+        user.save()
         self.user_repo.update(user_id, user)
         return user
 
-    # ============= Amenity Methods (Task 3) =============
+    # ============= Amenity Methods =============
 
     def create_amenity(self, amenity_data):
         amenity = Amenity(
@@ -74,10 +76,9 @@ class HBnBFacade:
         self.amenity_repo.update(amenity_id, amenity)
         return amenity
 
-# ============= Place Methods (Task 4) Amaal Asiri =============
+    # ============= Place Methods =============
 
     def create_place(self, place_data):
-        """Create a new place with validation."""
         owner = self.user_repo.get(place_data.get("owner_id"))
         if not owner:
             raise ValueError("Owner not found")
@@ -94,15 +95,12 @@ class HBnBFacade:
         return place
 
     def get_place(self, place_id):
-        """Retrieve a place by ID including owner and amenities."""
         return self.place_repo.get(place_id)
 
     def get_all_places(self):
-        """Retrieve all places."""
         return self.place_repo.get_all()
 
     def update_place(self, place_id, place_data):
-        """Update a place's information."""
         place = self.place_repo.get(place_id)
         if not place:
             return None
@@ -122,10 +120,9 @@ class HBnBFacade:
         self.place_repo.update(place_id, place)
         return place
 
-# ============= Review Methods (Task 5) Amaal Asiri =============
+    # ============= Review Methods =============
 
     def create_review(self, review_data):
-        """Create a new review with validation."""
         user = self.user_repo.get(review_data.get("user_id"))
         if not user:
             raise ValueError("User not found")
@@ -144,29 +141,24 @@ class HBnBFacade:
         return review
 
     def get_review(self, review_id):
-        """Retrieve a review by ID."""
         return self.review_repo.get(review_id)
 
     def get_all_reviews(self):
-        """Retrieve all reviews."""
         return self.review_repo.get_all()
 
     def get_reviews_by_place(self, place_id):
-        """Retrieve all reviews for a specific place."""
         return [
             r for r in self.review_repo.get_all()
             if r.place.id == place_id
         ]
 
     def get_review_by_user_and_place(self, user_id, place_id):
-        """Check if a user has already reviewed a place."""
         for review in self.review_repo.get_all():
             if review.user.id == user_id and review.place.id == place_id:
                 return review
         return None
 
     def update_review(self, review_id, review_data):
-        """Update a review's text and rating."""
         review = self.review_repo.get(review_id)
         if not review:
             return None
@@ -174,12 +166,11 @@ class HBnBFacade:
         if "rating" in review_data:
             review.rating = review_data["rating"]
         if "text" in review_data:
-            review.text = review_data["text"]
+            review.comment = review_data["text"] 
 
         review.save()
         self.review_repo.update(review_id, review)
         return review
 
     def delete_review(self, review_id):
-        """Delete a review by ID."""
         self.review_repo.delete(review_id)
