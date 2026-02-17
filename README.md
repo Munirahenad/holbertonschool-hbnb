@@ -88,3 +88,9 @@ This project is part of the Holberton School curriculum.
 - **Serialization:** converting models to JSON responses (including related/extended attributes).
 - **Testing:** manual testing via **Swagger/cURL** + automated tests using **pytest/unittest**.
 - **Git/GitHub Workflow:** team collaboration, commits, branches, and code reviews.
+
+## Academic Context
+- **School:** Holberton School Saudi Arabia
+- **Program:** Advanced Backend Specialization
+- **Project:** HBnB Evolution - Part 2 (Business Logic & API)
+- **Date:** February 2026
