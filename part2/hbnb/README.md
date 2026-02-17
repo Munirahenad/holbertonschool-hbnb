@@ -100,6 +100,7 @@ From inside `part2/hbnb`:
 Using `pytest`:
 ```bash
 python -m pytest app/tests -v
+
 ```
 
 ## Notes
