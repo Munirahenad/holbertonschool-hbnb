@@ -69,3 +69,7 @@ This project is part of the Holberton School curriculum.
 ## Part 2: Flask REST API + Business Logic (Facade & In-Memory)
 
 ## Project Overview (Part 2 Tasks)
+
+- *Task 0:* Initialize the project structure (Presentation/Business Logic/Persistence), set up Flask-RESTx, in-memory repository, and Facade skeleton.
+- *Task 1:* Implement core models (User, Place, Review, Amenity) with validation and relationships.
+- 
