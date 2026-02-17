@@ -77,3 +77,14 @@ This project is part of the Holberton School curriculum.
 - **Task 4:** Build Place endpoints (POST/GET/PUT + list), validate price/lat/lon, and include owner + amenities in responses.
 - **Task 5:** Build Review endpoints (POST/GET/PUT/DELETE), validate review text, link reviews to user + place, and support retrieving place reviews.
 - **Task 6:** Test and validate all endpoints (Swagger/cURL + automated tests) and produce a testing report.
+
+## Technologies / Techniques (Part 2)
+
+- **Python (OOP):** building core models (User/Place/Review/Amenity) with validation and relationships.
+- **Flask:** lightweight web framework to run the backend service.
+- **Flask-RESTx:** RESTful API structure + Swagger documentation + request/response models.
+- **Facade Pattern:** single entry point between API layer and business logic/persistence.
+- **Repository Pattern (In-Memory):** temporary persistence layer for CRUD operations (replaced by SQLAlchemy in Part 3).
+- **Serialization:** converting models to JSON responses (including related/extended attributes).
+- **Testing:** manual testing via **Swagger/cURL** + automated tests using **pytest/unittest**.
+- **Git/GitHub Workflow:** team collaboration, commits, branches, and code reviews.
