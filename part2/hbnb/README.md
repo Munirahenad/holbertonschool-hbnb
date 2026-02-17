@@ -28,6 +28,9 @@ hbnb/
 │   └── persistence/
 │       ├── __init__.py
 │       └── repository.py
+│   └── tests/
+│   │   ├── test_endpoints.py
+│   │   └── test_curl.sh
 ├── run.py
 ├── config.py
 ├── requirements.txt
