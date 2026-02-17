@@ -75,4 +75,5 @@ This project is part of the Holberton School curriculum.
 - **Task 2:** Build User endpoints (POST/GET/PUT + list) via Facade, excluding passwords from responses.
 - **Task 3:** Build Amenity endpoints (POST/GET/PUT + list) via Facade.
 - **Task 4:** Build Place endpoints (POST/GET/PUT + list), validate price/lat/lon, and include owner + amenities in responses.
+- **Task 5:** Build Review endpoints (POST/GET/PUT/DELETE), validate review text, link reviews to user + place, and support retrieving place reviews.
 - 
