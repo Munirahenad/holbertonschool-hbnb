@@ -9,7 +9,6 @@ user_model = api.model(
         "first_name": fields.String(required=True, description="First name of the user"),
         "last_name": fields.String(required=True, description="Last name of the user"),
         "email": fields.String(required=True, description="Email of the user"),
-        "password": fields.String(required=True, description="Password of the user"),
     },
 )
 
