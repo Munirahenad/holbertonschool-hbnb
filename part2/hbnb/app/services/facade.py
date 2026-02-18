@@ -133,42 +133,48 @@ class HBnBFacade:
     # ------------------ PLACES ------------------
     def create_place(self, place_data):
         owner_id = place_data.get("owner_id")
-        if not owner_id:
-            raise ValueError("owner_id is required")
-
         owner = self.get_user(owner_id)
         if not owner:
             raise ValueError("Owner not found")
 
-        # collect amenities ids from payload
-        amenities_ids = self._normalize_amenities_ids(place_data)
-        amenities = self._resolve_amenities(amenities_ids)
+        # Accept BOTH formats:
+        # 1) amenity_ids: ["id1", "id2"]
+        # 2) amenities: [{"id":"id1"}, {"id":"id2"}]
+        amenity_ids = place_data.get("amenity_ids")
 
-        # build shared kwargs
-        kwargs = dict(
+        if amenity_ids is None:
+            amenities_payload = place_data.get("amenities", [])
+            amenity_ids = []
+            for item in amenities_payload:
+                if isinstance(item, dict) and "id" in item:
+                    amenity_ids.append(item["id"])
+                elif isinstance(item, str):
+                    amenity_ids.append(item)
+
+        amenities = []
+        for amenity_id in amenity_ids or []:
+            amenity = self.get_amenity(amenity_id)
+            if not amenity:
+                raise ValueError(f"Amenity {amenity_id} not found")
+            amenities.append(amenity)
+
+        # IMPORTANT: Place model requires `owner` (object) حسب الخطأ اللي طلع لك سابقاً
+        place = Place(
             title=place_data.get("title"),
             description=place_data.get("description", ""),
+            owner=owner,
             latitude=place_data.get("latitude", 0.0),
             longitude=place_data.get("longitude", 0.0),
             price=place_data.get("price", 0.0),
-            amenities=amenities
         )
 
-        # IMPORTANT: your error shows Place.__init__ expects 'owner' (object)
-        # We'll try owner first, then fallback to owner_id to avoid breaking variations.
-        try:
-            place = Place(owner=owner, **kwargs)
-        except TypeError:
-            place = Place(owner_id=owner_id, **kwargs)
+        # لو عندك دوال ربط amenities داخل Place (مثل add_amenity)
+        for amenity in amenities:
+            if hasattr(place, "add_amenity"):
+                place.add_amenity(amenity)
 
         self.place_repo.add(place)
         return place
-
-    def get_place(self, place_id):
-        return self.place_repo.get(place_id)
-
-    def get_all_places(self):
-        return self.place_repo.get_all()
 
     def update_place(self, place_id, place_data):
         place = self.place_repo.get(place_id)
@@ -176,17 +182,36 @@ class HBnBFacade:
             return None
 
         for field in ("title", "description", "latitude", "longitude", "price"):
-            if field in place_data and place_data[field] is not None:
+            if field in place_data:
                 setattr(place, field, place_data[field])
 
-        # amenities update supports both keys
-        if "amenities" in place_data or "amenity_ids" in place_data:
-            amenities_ids = self._normalize_amenities_ids(place_data)
-            place.amenities = self._resolve_amenities(amenities_ids)
+        # Accept both amenity_ids and amenities
+        amenity_ids = place_data.get("amenity_ids")
+        if amenity_ids is None and "amenities" in place_data:
+            amenity_ids = []
+            for item in place_data.get("amenities", []):
+                if isinstance(item, dict) and "id" in item:
+                    amenity_ids.append(item["id"])
+                elif isinstance(item, str):
+                    amenity_ids.append(item)
+
+        if amenity_ids is not None:
+            # reset & add
+            if hasattr(place, "amenities"):
+                place.amenities = []
+            for amenity_id in amenity_ids:
+                amenity = self.get_amenity(amenity_id)
+                if not amenity:
+                    raise ValueError(f"Amenity {amenity_id} not found")
+                if hasattr(place, "add_amenity"):
+                    place.add_amenity(amenity)
+                elif hasattr(place, "amenities"):
+                    place.amenities.append(amenity)
 
         place.save()
         self.place_repo.update(place_id, place)
         return place
+
 
     # ------------------ REVIEWS ------------------
     def create_review(self, review_data):
