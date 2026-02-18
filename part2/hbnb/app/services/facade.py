@@ -35,7 +35,6 @@ class HBnBFacade:
         if "amenity_ids" in payload and isinstance(payload["amenity_ids"], list):
             ids.extend(payload["amenity_ids"])
 
-        # unique while preserving order
         seen = set()
         cleaned = []
         for x in ids:
@@ -137,9 +136,6 @@ class HBnBFacade:
         if not owner:
             raise ValueError("Owner not found")
 
-        # Accept BOTH formats:
-        # 1) amenity_ids: ["id1", "id2"]
-        # 2) amenities: [{"id":"id1"}, {"id":"id2"}]
         amenity_ids = place_data.get("amenity_ids")
 
         if amenity_ids is None:
@@ -158,7 +154,6 @@ class HBnBFacade:
                 raise ValueError(f"Amenity {amenity_id} not found")
             amenities.append(amenity)
 
-        # IMPORTANT: Place model requires `owner` (object) حسب الخطأ اللي طلع لك سابقاً
         place = Place(
             title=place_data.get("title"),
             description=place_data.get("description", ""),
@@ -168,13 +163,20 @@ class HBnBFacade:
             price=place_data.get("price", 0.0),
         )
 
-        # لو عندك دوال ربط amenities داخل Place (مثل add_amenity)
         for amenity in amenities:
             if hasattr(place, "add_amenity"):
                 place.add_amenity(amenity)
+            elif hasattr(place, "amenities"):
+                place.amenities.append(amenity)
 
         self.place_repo.add(place)
         return place
+
+    def get_place(self, place_id):
+        return self.place_repo.get(place_id)
+
+    def get_all_places(self):
+        return self.place_repo.get_all()
 
     def update_place(self, place_id, place_data):
         place = self.place_repo.get(place_id)
@@ -185,7 +187,6 @@ class HBnBFacade:
             if field in place_data:
                 setattr(place, field, place_data[field])
 
-        # Accept both amenity_ids and amenities
         amenity_ids = place_data.get("amenity_ids")
         if amenity_ids is None and "amenities" in place_data:
             amenity_ids = []
@@ -196,7 +197,6 @@ class HBnBFacade:
                     amenity_ids.append(item)
 
         if amenity_ids is not None:
-            # reset & add
             if hasattr(place, "amenities"):
                 place.amenities = []
             for amenity_id in amenity_ids:
@@ -212,8 +212,7 @@ class HBnBFacade:
         self.place_repo.update(place_id, place)
         return place
 
-
-      # ------------------ REVIEWS ------------------
+    # ------------------ REVIEWS ------------------
     def create_review(self, review_data):
         text = review_data.get("text")
         user_id = review_data.get("user_id")
@@ -250,14 +249,12 @@ class HBnBFacade:
         return self.review_repo.get_all()
 
     def get_reviews_by_place(self, place_id):
-        """Return list of reviews for a given place_id."""
         return [
             r for r in self.review_repo.get_all()
             if getattr(r, "place_id", None) == place_id
         ]
 
     def get_reviews_by_user(self, user_id):
-        """Return list of reviews for a given user_id."""
         return [
             r for r in self.review_repo.get_all()
             if getattr(r, "user_id", None) == user_id
