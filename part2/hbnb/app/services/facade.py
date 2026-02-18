@@ -213,7 +213,7 @@ class HBnBFacade:
         return place
 
 
-    # ------------------ REVIEWS ------------------
+      # ------------------ REVIEWS ------------------
     def create_review(self, review_data):
         text = review_data.get("text")
         user_id = review_data.get("user_id")
@@ -248,6 +248,20 @@ class HBnBFacade:
 
     def get_all_reviews(self):
         return self.review_repo.get_all()
+
+    def get_reviews_by_place(self, place_id):
+        """Return list of reviews for a given place_id."""
+        return [
+            r for r in self.review_repo.get_all()
+            if getattr(r, "place_id", None) == place_id
+        ]
+
+    def get_reviews_by_user(self, user_id):
+        """Return list of reviews for a given user_id."""
+        return [
+            r for r in self.review_repo.get_all()
+            if getattr(r, "user_id", None) == user_id
+        ]
 
     def update_review(self, review_id, review_data):
         review = self.review_repo.get(review_id)
