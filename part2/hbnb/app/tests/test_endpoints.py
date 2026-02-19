@@ -31,7 +31,7 @@ class TestUserEndpoints(unittest.TestCase):
         self.assertIn("id", data)
         self.assertEqual(data["first_name"], "Jane")
         self.assertEqual(data["email"], "jane.doe@example.com")
-        self.assertNotIn("password", data)  # password must never be returned
+        self.assertNotIn("password", data)
 
     def test_create_user_empty_first_name(self):
         """Empty first_name - expects 400"""
@@ -587,10 +587,6 @@ class TestReviewEndpoints(unittest.TestCase):
         self.client.delete(f'/api/v1/reviews/{review_id}')
         response = self.client.get(f'/api/v1/reviews/{review_id}')
         self.assertEqual(response.status_code, 404)
-
-
-if __name__ == "__main__":
-    unittest.main()
 
 
 if __name__ == "__main__":
