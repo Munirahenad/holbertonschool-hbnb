@@ -552,7 +552,7 @@ The HBnB Part 2 API is production-ready for the next phase of development.
 
 ---
 
-**Tested by:** Munira Alhenad  
+**Tested by:** Amaal Asiri, Maryam Alessa and Munira Alotaibi   
 **Date:** February 20, 2026  
 **Test Framework:** Python unittest  
 **API Framework:** Flask + Flask-RESTx  
