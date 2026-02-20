@@ -6,6 +6,7 @@ Covers: Users, Places, Reviews, Amenities
 """
 
 import unittest
+import uuid
 from app import create_app
 
 
@@ -241,10 +242,11 @@ class TestPlaceEndpoints(unittest.TestCase):
         self.app = create_app()
         self.client = self.app.test_client()
 
+        unique_email = f"owner.place.{uuid.uuid4()}@example.com"
         res = self.client.post('/api/v1/users/', json={
             "first_name": "Owner",
             "last_name": "User",
-            "email": "owner.place@example.com",
+            "email": unique_email,
             "password": "password123"
         })
         self.owner_id = res.get_json()["id"]
@@ -404,19 +406,21 @@ class TestReviewEndpoints(unittest.TestCase):
         self.client = self.app.test_client()
 
         # Create owner
+        unique_email = f"owner.review.{uuid.uuid4()}@example.com"
         res = self.client.post('/api/v1/users/', json={
             "first_name": "Owner",
             "last_name": "User",
-            "email": "owner.review@example.com",
+            "email": unique_email,
             "password": "password123"
         })
         self.owner_id = res.get_json()["id"]
 
         # Create reviewer (different from owner)
+        unique_email = f"reviewer.test.{uuid.uuid4()}@example.com"
         res = self.client.post('/api/v1/users/', json={
             "first_name": "Reviewer",
             "last_name": "User",
-            "email": "reviewer.test@example.com",
+            "email": unique_email,
             "password": "password123"
         })
         self.reviewer_id = res.get_json()["id"]
