@@ -225,6 +225,9 @@ class HBnBFacade:
         if not place_id:
             raise ValueError("place_id is required")
 
+        user = self.get_user(user_id)
+        place = self.get_place(place_id)
+
         if not self.get_user(user_id):
             raise ValueError("User not found")
         if not self.get_place(place_id):
@@ -236,8 +239,8 @@ class HBnBFacade:
         review = Review(
             text=text,
             rating=review_data.get("rating"),
-            user_id=user_id,
-            place_id=place_id
+            user=user,
+            place=place
         )
         self.review_repo.add(review)
         return review
@@ -285,7 +288,11 @@ class HBnBFacade:
         return True
 
     def get_review_by_user_and_place(self, user_id, place_id):
-        for review in self.review_repo.get_all():
-            if getattr(review, "user_id", None) == user_id and getattr(review, "place_id", None) == place_id:
+        """Check if a user has already reviewed a place."""
+        all_reviews = self.review_repo.get_all()
+    
+        for review in all_reviews:
+            if review.user.id == user_id and review.place.id == place_id:
+                print(f"✅ Found duplicate review: {review.id}")  # print واحد فقط
                 return review
         return None
