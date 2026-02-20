@@ -29,6 +29,7 @@ hbnb/
 │       ├── __init__.py
 │       └── repository.py
 │   └── tests/
+│   │   ├── __init__.py
 │   │   ├── test_endpoints.py
 │   │   └── test_curl.sh
 ├── run.py
@@ -65,13 +66,14 @@ Implement the core HBnB models (User, Place, Review, Amenity) based on Part 1 de
   ## Task 2 Summary (Munirah)
 Implement User endpoints with Flask-RESTx: *POST* create, *GET* by ID, *GET* list, *PUT* update. Connect API to Business Logic via *Facade/Repository, use correct status codes, and **exclude passwords* from all responses. (No DELETE for users in Part 2.)
 
-   ## Task 3 Summary ( Maryam) 
+ ## Task 3 Summary ( Maryam) 
 Implement Amenity endpoints with Flask-RESTx: *POST* create, *GET* by ID, *GET* list, and *PUT* update. Integrate API with Business Logic via the *Facade* pattern, use correct status codes, and document/test via Swagger/cURL. (No DELETE for amenities in Part 2.)
 
- ## Task 4 Summary (Amaal) 
-Build Place endpoints (**POST/GET/PUT + list**) via the **Facade**, validate **price/lat/lon**, and return Place data with related **owner + amenities**. *(No DELETE; reviews in Task 5.)*
+ ## Task 4 Summary
+Implement Place endpoints (**POST/GET/PUT + list**) via the **Facade**, validate **price/latitude/longitude**, and return Place data with related **owner + amenities**. *(No DELETE for places in Part 2.)*
 
-Implement Review endpoints (**POST/GET/PUT/DELETE**) via the **Facade**, validate review text and ensure each review is linked to a **user + place**. Update Places API to return the **reviews collection** for a place and support fetching all reviews for a specific place. *(DELETE is only for reviews in Part 2.)*
+## Task 5 Summary
+Implement Review endpoints (**POST/GET/PUT/DELETE**) via the **Facade**, validate review text, ensure each review is linked to a **user + place**, and support fetching all reviews for a specific place. *(DELETE is only for reviews in Part 2.)*
 
 ## Task 6 Summary (Amaal) 
 Test and validate all implemented endpoints: add basic input validation, run **black-box tests** using **cURL + Swagger**, write automated tests (**pytest/unittest**), and produce a testing report covering successful cases and key edge/failure cases.
