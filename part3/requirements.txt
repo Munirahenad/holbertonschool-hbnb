@@ -1,0 +1,6 @@
+Flask
+flask-restx
+Flask-SQLAlchemy
+Flask-JWT-Extended
+Flask-Bcrypt
+python-dotenv
