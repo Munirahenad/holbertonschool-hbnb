@@ -12,7 +12,6 @@ def create_app(config_class=DevelopmentConfig):
     app = Flask(__name__)
     app.config.from_object(config_class)
 
-    # init extensions (used in later tasks)
     db.init_app(app)
     bcrypt.init_app(app)
     jwt.init_app(app)
