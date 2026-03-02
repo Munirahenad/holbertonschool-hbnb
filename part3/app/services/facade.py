@@ -1,5 +1,5 @@
 #!/usr/bin/python3
-"""HBnB Facade (Task 5: use SQLAlchemyRepository for users)."""
+"""HBnB Facade (Task 5)."""
 
 from app.persistence.in_memory_repository import InMemoryRepository
 from app.persistence.sqlalchemy_repository import SQLAlchemyRepository
@@ -7,19 +7,18 @@ from app.persistence.sqlalchemy_repository import SQLAlchemyRepository
 
 class HBnBFacade:
     """
-    Task 5 requirement:
-    - User operations should use SQLAlchemyRepository (when user_model is available).
-    - No DB initialization here.
+    Task 5:
+    - Provide SQLAlchemyRepository.
+    - Refactor user operations to use SQLAlchemyRepository when user_model is available.
+    - No database initialization here (handled in Task 6).
     """
 
     def __init__(self, user_model=None, user_repo=None):
-        # Allow explicit repo injection (useful for tests)
         if user_repo is not None:
             self.user_repo = user_repo
         elif user_model is not None:
             self.user_repo = SQLAlchemyRepository(user_model)
         else:
-            # Fallback until Task 6 provides mapped User model
             self.user_repo = InMemoryRepository()
 
     # ------------------ USERS ------------------
