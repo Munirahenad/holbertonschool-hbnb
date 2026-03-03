@@ -1,78 +1,66 @@
+#!/usr/bin/python3
+"""User endpoints - Tasks 3 & 4 (Amaal)"""
+
 from flask_restx import Namespace, Resource, fields
-from app.services import facade
+from flask_jwt_extended import jwt_required, get_jwt_identity, get_jwt
+from app.services.facade import facade
 
 api = Namespace("users", description="User operations")
 
-user_model = api.model(
-    "User",
-    {
-        "first_name": fields.String(required=True, description="First name of the user"),
-        "last_name": fields.String(required=True, description="Last name of the user"),
-        "email": fields.String(required=True, description="Email of the user"),
-        "password": fields.String(required=True, description="Password of the user"),
-    },
-)
+user_model = api.model("User", {
+    "first_name": fields.String(required=True, description="First name of the user"),
+    "last_name":  fields.String(required=True, description="Last name of the user"),
+    "email":      fields.String(required=True, description="Email of the user"),
+    "password":   fields.String(required=True, description="Password of the user"),
+})
 
-user_update_model = api.model(
-    "UserUpdate",
-    {
-        "first_name": fields.String(description="First name of the user"),
-        "last_name": fields.String(description="Last name of the user"),
-        "email": fields.String(description="Email of the user"),
-    },
-)
-
+user_update_model = api.model("UserUpdate", {
+    "first_name": fields.String(description="First name of the user"),
+    "last_name":  fields.String(description="Last name of the user"),
+})
 
 def user_to_dict(user):
     """Convert user to dictionary WITHOUT password."""
     return {
-        "id": user.id,
+        "id":         user.id,
         "first_name": user.first_name,
-        "last_name": user.last_name,
-        "email": user.email,
+        "last_name":  user.last_name,
+        "email":      user.email,
+        "is_admin":   user.is_admin,
     }
 
 
 @api.route("/")
 class UserList(Resource):
-    @api.expect(user_model, validate=True)
-    @api.response(201, "User successfully created")
-    @api.response(400, "Email already registered")
-    @api.response(400, "Invalid input data")
-    def post(self):
-        """Register a new user with password hashing"""
-        user_data = api.payload
-
-        existing_user = facade.get_user_by_email(user_data["email"])
-        if existing_user:
-            return {"error": "Email already registered"}, 400
-
-        try:
-            new_user = facade.create_user(user_data)
-        except ValueError as e:
-            return {"error": str(e)}, 400
-
-        return {
-            "id": new_user.id,
-            "first_name": new_user.first_name,
-            "last_name": new_user.last_name,
-            "email": new_user.email,
-            "message": "User created successfully"
-        }, 201
 
     @api.response(200, "List of users retrieved successfully")
     def get(self):
-        """Retrieve a list of users"""
-        users = facade.get_users()
-        return [user_to_dict(u) for u in users], 200
+        """Retrieve a list of users - PUBLIC"""
+        return [user_to_dict(u) for u in facade.get_users()], 200
+
+    @api.expect(user_model, validate=True)
+    @api.response(201, "User successfully created")
+    @api.response(400, "Invalid input data")
+    @api.response(403, "Admin access required")
+    @jwt_required()
+    def post(self):
+        """Register a new user - ADMIN ONLY (Task 4)"""
+        if not get_jwt().get('is_admin'):
+            return {'error': 'Admin access required'}, 403
+        try:
+            new_user = facade.create_user(api.payload)
+        except ValueError as e:
+            return {"error": str(e)}, 400
+        return user_to_dict(new_user), 201
 
 
-@api.route("/<user_id>")
+@api.route("/<string:user_id>")
 class UserResource(Resource):
+
     @api.response(200, "User details retrieved successfully")
     @api.response(404, "User not found")
     def get(self, user_id):
-        """Get user details by ID"""
+        """Get user details by ID - PUBLIC"""
         user = facade.get_user(user_id)
         if not user:
             return {"error": "User not found"}, 404
@@ -80,24 +68,31 @@ class UserResource(Resource):
 
     @api.expect(user_update_model, validate=False)
     @api.response(200, "User updated successfully")
-    @api.response(404, "User not found")
-    @api.response(400, "Email already registered")
     @api.response(400, "Invalid input data")
+    @api.response(403, "Unauthorized action")
+    @api.response(404, "User not found")
+    @jwt_required()
     def put(self, user_id):
-        """Update user information (password cannot be updated here)"""
-        user_data = api.payload
+        """
+        Update user - AUTHENTICATED (Task 3 & 4)
+        - Regular user: يعدل بس بياناته بدون email/password
+        - Admin: يعدل أي يوزر + email و password
+        """
+        current_user_id = get_jwt_identity()
+        is_admin = get_jwt().get('is_admin', False)
 
-        if "email" in user_data:
-            existing_user = facade.get_user_by_email(user_data["email"])
-            if existing_user and existing_user.id != user_id:
-                return {"error": "Email already registered"}, 400
+        if not is_admin and current_user_id != user_id:
+            return {'error': 'Unauthorized action'}, 403
+
+        user_data = api.payload
+        if not is_admin and ('email' in user_data or 'password' in user_data):
+            return {'error': 'Cannot modify email or password'}, 400
 
         try:
             updated_user = facade.update_user(user_id, user_data)
-        except ValueError as exc:
-            return {"error": str(exc)}, 400
+        except ValueError as e:
+            return {"error": str(e)}, 400
 
         if not updated_user:
             return {"error": "User not found"}, 404
-
         return user_to_dict(updated_user), 200
