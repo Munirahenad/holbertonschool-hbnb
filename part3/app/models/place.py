@@ -88,25 +88,23 @@ class Place(BaseModel):
 
     # ============= Business Methods =============
 
-   def get_average_rating(self) -> float:    #Task 8, Amaal
-    if not self.reviews:
-        return 0.0
-    return sum(r.rating for r in self.reviews) / len(self.reviews)
+def get_average_rating(self) -> float:    #Task 8, Amaal
+        if not self.reviews:
+            return 0.0
+        return sum(r.rating for r in self.reviews) / len(self.reviews)
 
-    # ============= Serialization =============
-
-   def to_dict(self) -> dict:    #Task 8, Amaal
-    base_dict = super().to_dict()
-    base_dict.update({
-        "title":       self.title,
-        "description": self.description,
-        "price":       self.price,
-        "latitude":    self.latitude,
-        "longitude":   self.longitude,
-        "owner_id":    self.owner_id,
-        "amenities":   [{"id": a.id, "name": a.name} for a in self.amenities],
-    })
-    return base_dict
+    def to_dict(self) -> dict:
+        base_dict = super().to_dict()
+        base_dict.update({
+            "title":       self.title,
+            "description": self.description,
+            "price":       self.price,
+            "latitude":    self.latitude,
+            "longitude":   self.longitude,
+            "owner_id":    self.owner_id,
+            "amenities":   [{"id": a.id, "name": a.name} for a in self.amenities],
+        })
+        return base_dict
 
     # ============= Magic Methods =============
 
