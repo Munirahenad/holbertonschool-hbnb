@@ -1,9 +1,12 @@
 #!/usr/bin/python3
-"""SQLAlchemy repository implementation (Tasks 5 & 6)."""
+"""SQLAlchemy repository implementation (Tasks 5, 6 & 7)."""
 
 from app.extensions import db
 from app.persistence.repository import Repository
 from app.models.user import User
+from app.models.place import Place
+from app.models.review import Review
+from app.models.amenity import Amenity
 
 
 class SQLAlchemyRepository(Repository):
@@ -74,3 +77,30 @@ class UserRepository(SQLAlchemyRepository):
             User: User object or None if not found
         """
         return self.model.query.filter_by(email=email).first()
+
+
+# ==================== TASK 7: PlaceRepository ====================
+
+class PlaceRepository(SQLAlchemyRepository):
+    """Place-specific repository."""
+    
+    def __init__(self):
+        super().__init__(Place)
+
+
+# ==================== TASK 7: ReviewRepository ====================
+
+class ReviewRepository(SQLAlchemyRepository):
+    """Review-specific repository."""
+    
+    def __init__(self):
+        super().__init__(Review)
+
+
+# ==================== TASK 7: AmenityRepository ====================
+
+class AmenityRepository(SQLAlchemyRepository):
+    """Amenity-specific repository."""
+    
+    def __init__(self):
+        super().__init__(Amenity)
