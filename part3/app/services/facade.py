@@ -157,19 +157,17 @@ class HBnBFacade:
         """Get all reviews (Task 7)."""
         return self.review_repo.get_all()
 
-    def get_reviews_by_place(self, place_id):
-        """
-        Get all reviews for a specific place.
-        Note: This will be implemented in Task 8 with relationships.
-        """
-        return []
+    def get_reviews_by_place(self, place_id):    #Task 8, Amaal
+        place = self.place_repo.get(place_id)
+        if not place:
+            return []
+    return place.reviews
 
-    def get_reviews_by_user(self, user_id):
-        """
-        Get all reviews by a specific user.
-        Note: This will be implemented in Task 8 with relationships.
-        """
-        return []
+    def get_reviews_by_user(self, user_id):    #Task 8, Amaal
+        user = self.user_repo.get(user_id)
+        if not user:
+            return []
+        return user.reviews
 
     def update_review(self, review_id, data):
         """Update review information (Task 7)."""
