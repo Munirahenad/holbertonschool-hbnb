@@ -9,6 +9,11 @@ from typing import Any
 from app.extensions import db
 from .base_model import BaseModel
 
+place_amenity = db.Table(    #Task 8, Amaal
+    'place_amenity',
+    db.Column('place_id',   db.String(36), db.ForeignKey('places.id'),    primary_key=True),
+    db.Column('amenity_id', db.String(36), db.ForeignKey('amenities.id'), primary_key=True)
+)
 
 class Place(BaseModel):
     """
@@ -31,11 +36,12 @@ class Place(BaseModel):
     latitude = db.Column(db.Float, nullable=False)
     longitude = db.Column(db.Float, nullable=False)
 
-    # Relationships (to be implemented in Task 8)
-    # owner_id = db.Column(db.String(36), db.ForeignKey('users.id'), nullable=False)
-    # owner = db.relationship('User', backref='places', lazy=True)
-    # reviews = db.relationship('Review', backref='place', lazy=True, cascade='all, delete-orphan')
-    # amenities = db.relationship('Amenity', secondary='place_amenity', backref='places', lazy=True)
+    # ==================== TASK 8: Relationships - Amaal ====================
+    owner_id  = db.Column(db.String(36), db.ForeignKey('users.id'), nullable=False)
+    reviews   = db.relationship('Review',  backref='place', lazy=True,
+                            cascade='all, delete-orphan')
+    amenities = db.relationship('Amenity', secondary=place_amenity, lazy='subquery',
+                            backref=db.backref('places', lazy=True))
 
     def __init__(self, **kwargs):
         """
@@ -82,26 +88,25 @@ class Place(BaseModel):
 
     # ============= Business Methods =============
 
-    def get_average_rating(self) -> float:
-        """
-        Calculate average rating from reviews.
-        Note: This will be implemented in Task 8 when relationships are added.
-        """
+   def get_average_rating(self) -> float:    #Task 8, Amaal
+    if not self.reviews:
         return 0.0
+    return sum(r.rating for r in self.reviews) / len(self.reviews)
 
     # ============= Serialization =============
 
-    def to_dict(self) -> dict:
-        """Convert place to dictionary."""
-        base_dict = super().to_dict()
-        base_dict.update({
-            "title": self.title,
-            "description": self.description,
-            "price": self.price,
-            "latitude": self.latitude,
-            "longitude": self.longitude,
-        })
-        return base_dict
+   def to_dict(self) -> dict:    #Task 8, Amaal
+    base_dict = super().to_dict()
+    base_dict.update({
+        "title":       self.title,
+        "description": self.description,
+        "price":       self.price,
+        "latitude":    self.latitude,
+        "longitude":   self.longitude,
+        "owner_id":    self.owner_id,
+        "amenities":   [{"id": a.id, "name": a.name} for a in self.amenities],
+    })
+    return base_dict
 
     # ============= Magic Methods =============
 
