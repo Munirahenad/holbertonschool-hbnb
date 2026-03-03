@@ -75,8 +75,8 @@ class UserResource(Resource):
     def put(self, user_id):
         """
         Update user - AUTHENTICATED (Task 3 & 4)
-        - Regular user: يعدل بس بياناته بدون email/password
-        - Admin: يعدل أي يوزر + email و password
+        - Regular user: can only update info but without email/password
+        - Admin: can change email and password
         """
         current_user_id = get_jwt_identity()
         is_admin = get_jwt().get('is_admin', False)
