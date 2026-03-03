@@ -58,15 +58,15 @@ class Review(BaseModel):
 
     # ============= Serialization =============
 
-   def to_dict(self) -> dict:    #Task 8, Amaal
-    base_dict = super().to_dict()
-    base_dict.update({
-        "text":     self.text,
-        "rating":   self.rating,
-        "user_id":  self.user_id,
-        "place_id": self.place_id,
-    })
-    return base_dict
+    def to_dict(self) -> dict:    #ُTask 8, Amaal
+        base_dict = super().to_dict()
+        base_dict.update({
+            "text":     self.text,
+            "rating":   self.rating,
+            "user_id":  self.user_id,
+            "place_id": self.place_id,
+        })
+        return base_dict
 
     # ============= Magic Methods =============
 
