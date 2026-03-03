@@ -161,7 +161,7 @@ class HBnBFacade:
         place = self.place_repo.get(place_id)
         if not place:
             return []
-    return place.reviews
+        return place.reviews
 
     def get_reviews_by_user(self, user_id):    #Task 8, Amaal
         user = self.user_repo.get(user_id)
