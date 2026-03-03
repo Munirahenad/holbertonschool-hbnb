@@ -39,9 +39,9 @@ class User(BaseModel):
     is_admin = db.Column(db.Boolean, default=False)
 
     # ==================== TASK 8: Relationships - Amaal ====================
-places  = db.relationship('Place',  backref='owner', lazy=True,
+    places  = db.relationship('Place',  backref='owner', lazy=True,
                           cascade='all, delete-orphan')
-reviews = db.relationship('Review', backref='user',  lazy=True,
+    reviews = db.relationship('Review', backref='user',  lazy=True,
                           cascade='all, delete-orphan')
 
     # ==================== TASK 1: Password Hashing ====================
