@@ -249,10 +249,5 @@ Visualize database schema.
 
 ---
 
-# Database Schema
-
-The database consists of five main tables:
-
-
 
 
