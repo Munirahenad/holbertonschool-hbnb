@@ -272,11 +272,4 @@ Stores place information:
 - `longitude`
 - `owner_id`
 
-### reviews
-Stores reviews:
-- `id`
-- `text`
-- `rating`
-- `user_id`
-- `place_id`
 
