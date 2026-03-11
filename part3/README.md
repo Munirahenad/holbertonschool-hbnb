@@ -248,6 +248,7 @@ Visualize database schema.
 - Documentation in `docs/er_diagram.md`
 
 ---
+
 # Database Schema
 
 The database consists of five main tables:
@@ -270,3 +271,19 @@ Stores place information:
 - `latitude`
 - `longitude`
 - `owner_id`
+
+### reviews
+Stores reviews:
+- `id`
+- `text`
+- `rating`
+- `user_id`
+- `place_id`
+
+### amenities
+Stores amenities:
+- `id`
+- `name`
+
+### place_amenity
+Association table for **many-to-many relationship** between places and amenities.
