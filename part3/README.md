@@ -280,7 +280,3 @@ Stores reviews:
 - `user_id`
 - `place_id`
 
-### amenities
-Stores amenities:
-- `id`
-- `name`
