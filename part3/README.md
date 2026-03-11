@@ -261,3 +261,12 @@ Stores user information:
 - `last_name`
 - `is_admin`
 
+### places
+Stores place information:
+- `id`
+- `title`
+- `description`
+- `price`
+- `latitude`
+- `longitude`
+- `owner_id`
