@@ -248,6 +248,8 @@ Visualize database schema.
 - Documentation in `docs/er_diagram.md`
 
 ---
+# Database Schema
 
+The database consists of five main tables:
 
 
