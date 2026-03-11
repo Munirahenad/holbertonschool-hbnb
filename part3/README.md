@@ -284,6 +284,3 @@ Stores reviews:
 Stores amenities:
 - `id`
 - `name`
-
-### place_amenity
-Association table for **many-to-many relationship** between places and amenities.
