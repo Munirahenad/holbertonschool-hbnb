@@ -136,3 +136,56 @@ Program: Advanced Backend Specialization
 Project: HBnB Evolution - Part 3
 
 Date: March 2026
+
+
+
+# Part 4: Simple Web Client
+
+## Project Overview
+
+| Task | Description |
+|------|------------|
+| Task 0 | Design (HTML & CSS pages) |
+| Task 1 | Login with JWT (cookies) |
+| Task 2 | List Places (Fetch + Filtering) |
+| Task 3 | Place Details (Display + Reviews) |
+| Task 4 | Add Review (POST + Authentication) |
+
+---
+
+## Tech Stack
+
+| Technology | Purpose |
+|-----------|--------|
+| HTML5 | Structure |
+| CSS3 | Styling |
+| JavaScript (ES6) | Client-side logic |
+| Fetch API | API communication |
+| JWT (Cookies) | Authentication |
+| Flask API | Backend integration |
+
+---
+
+## Features
+
+- User authentication using JWT stored in cookies  
+- Fetch and display places dynamically  
+- Client-side price filtering  
+- View place details with amenities and reviews  
+- Submit reviews for authenticated users  
+- Dynamic UI without page reloads  
+
+---
+
+## Academic Context
+
+School: Holberton School Saudi Arabia  
+
+Program: Advanced Backend Specialization  
+
+Project: HBnB Evolution - Part 4  
+
+Date: April 2026  
+
+---
+
