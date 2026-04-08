@@ -3,4 +3,5 @@ flask-restx
 Flask-SQLAlchemy
 Flask-JWT-Extended
 Flask-Bcrypt
+flask-cors
 python-dotenv

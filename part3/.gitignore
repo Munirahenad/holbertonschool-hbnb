@@ -15,9 +15,9 @@ env/
 # Environment variables
 .env
 
-# SQLite database (development)
-instance/
-*.db
+# SQLite database (development) - Keep for easy setup
+# instance/
+# *.db
 *.sqlite3
 
 # Test / coverage

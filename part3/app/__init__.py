@@ -2,6 +2,7 @@
 """HBnB Application Factory - Part 3 (Task 0)"""
 import os
 from flask import Flask
+from flask_cors import CORS
 from flask_restx import Api
 from config import DevelopmentConfig
 from app.extensions import db, bcrypt, jwt
@@ -10,9 +11,10 @@ def create_app(config_class=DevelopmentConfig):
     app = Flask(__name__, instance_path=os.path.join(
         os.path.dirname(os.path.dirname(os.path.abspath(__file__))), 'instance'
     ))
+    CORS(app)  # Enable CORS for all routes
     app.config.from_object(config_class)
     db.init_app(app)
-    bcrypt.init_app(app)
+    # bcrypt.init_app(app)
     jwt.init_app(app)
     api = Api(
         app,
@@ -31,4 +33,5 @@ def create_app(config_class=DevelopmentConfig):
     api.add_namespace(amenities_ns, path="/api/v1/amenities")
     api.add_namespace(places_ns, path="/api/v1/places")
     api.add_namespace(reviews_ns, path="/api/v1/reviews")
+    print("Namespaces added")
     return app

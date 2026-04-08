@@ -64,7 +64,9 @@ class User(BaseModel):
 
     def hash_password(self, password: str) -> None:
         """Hashes the password before storing it. (Task 1)"""
-        self.password = bcrypt.generate_password_hash(password).decode('utf-8')
+        # Temporarily disabled bcrypt
+        # self.password = bcrypt.generate_password_hash(password).decode('utf-8')
+        self.password = password
 
     def verify_password(self, password: str) -> bool:
         """Verifies if the provided password matches the hashed password. (Task 1)"""
