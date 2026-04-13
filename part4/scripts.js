@@ -2,7 +2,7 @@
    scripts.js — HBnB Part 4
    ============================================================ */
 
-const API_URL = 'http://127.0.0.1:5000/api/v1';
+const API_URL = 'http://127.0.0.1:5001/api/v1';
 
 /* ============================================================
    UTILITY: Cookie helpers
@@ -31,6 +31,26 @@ function getPlaceIdFromURL() {
     return params.get('id');
 }
 
+function getPlaceImage(title) {
+    if (!title) return 'images/modern.png';
+    const lower = title.toLowerCase();
+    if (lower.includes('resort')) return 'images/luxury.png';
+    if (lower.includes('apartment') || lower.includes('room')) return 'images/cozy.png';
+    return 'images/modern.png';
+}
+
+function setupLogout() {
+    const logoutLink = document.getElementById('logout-link');
+    if (logoutLink && !logoutLink.dataset.bound) {
+        logoutLink.dataset.bound = true;
+        logoutLink.addEventListener('click', (e) => {
+            e.preventDefault();
+            setCookie('token', '', -1);
+            window.location.reload();
+        });
+    }
+}
+
 /* ============================================================
    LOGIN
    ============================================================ */
@@ -54,9 +74,14 @@ let allPlaces = [];
 function checkAuthIndex() {
     const token = getCookie('token');
     const loginLink = document.getElementById('login-link');
+    const logoutLink = document.getElementById('logout-link');
 
     if (loginLink) {
         loginLink.style.display = token ? 'none' : 'block';
+    }
+    if (logoutLink) {
+        logoutLink.style.display = token ? 'block' : 'none';
+        setupLogout();
     }
 
     fetchPlaces(token);
@@ -115,12 +140,14 @@ function displayPlaces(places) {
         const placeId = place.id || '';
         const placeName = place.name || place.title || 'Unnamed place';
         const placePrice = place.price || place.price_by_night || 0;
+        const imgSrc = getPlaceImage(placeName);
 
         const card = document.createElement('div');
         card.className = 'place-card';
         card.dataset.price = placePrice;
 
         card.innerHTML = `
+            <img src="${imgSrc}" alt="${placeName}" class="place-image">
             <h3>${placeName}</h3>
             <p class="price">$${placePrice} / night</p>
             <a href="place.html?id=${placeId}" class="details-button">View Details</a>
@@ -189,13 +216,14 @@ function displayPlaceDetails(place) {
 
     const placeName = place.name || place.title || 'Unnamed place';
     const placePrice = place.price || place.price_by_night || 0;
-    const hostName = place.host || place.owner_name || place.owner_id || 'N/A';
+    const hostName = place.owner_name || place.host || place.owner_id || 'N/A';
     const description = place.description || 'No description provided.';
     const location = place.location || (
         place.latitude !== undefined && place.longitude !== undefined
             ? `${place.latitude}, ${place.longitude}`
             : 'N/A'
     );
+    const imgSrc = getPlaceImage(placeName);
 
     const amenitiesHTML = place.amenities && place.amenities.length > 0
         ? place.amenities.map(a => `<span class="amenity-tag">${a.name || a}</span>`).join('')
@@ -203,6 +231,7 @@ function displayPlaceDetails(place) {
 
     section.innerHTML = `
         <div class="place-details">
+            <img src="${imgSrc}" alt="${placeName}" class="place-details-image">
             <h1>${placeName}</h1>
             <div class="place-info">
                 <p><strong>Host:</strong> ${hostName}</p>
@@ -316,6 +345,8 @@ async function handleReviewResponse(response) {
         const placeId = getPlaceIdFromURL();
         if (placeId && window.location.pathname.includes('add_review')) {
             window.location.href = `place.html?id=${placeId}`;
+        } else if (placeId) {
+            fetchReviews(getCookie('token'), placeId);
         }
     } else {
         const data = await response.json().catch(() => ({}));
@@ -369,8 +400,13 @@ document.addEventListener('DOMContentLoaded', () => {
         const token = getCookie('token');
 
         const loginLink = document.getElementById('login-link');
+        const logoutLink = document.getElementById('logout-link');
         if (loginLink) {
             loginLink.style.display = token ? 'none' : 'block';
+        }
+        if (logoutLink) {
+            logoutLink.style.display = token ? 'block' : 'none';
+            setupLogout();
         }
 
         const addReviewSection = document.getElementById('add-review');

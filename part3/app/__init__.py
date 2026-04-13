@@ -14,7 +14,7 @@ def create_app(config_class=DevelopmentConfig):
     CORS(app)  # Enable CORS for all routes
     app.config.from_object(config_class)
     db.init_app(app)
-    # bcrypt.init_app(app)
+    bcrypt.init_app(app)
     jwt.init_app(app)
     api = Api(
         app,

@@ -95,6 +95,7 @@ class Place(BaseModel):
 
     def to_dict(self) -> dict:    #Task 8, Amaal
         base_dict = super().to_dict()
+        owner_name = f"{self.owner.first_name} {self.owner.last_name}" if self.owner else None
         base_dict.update({
             "title":       self.title,
             "description": self.description,
@@ -102,6 +103,7 @@ class Place(BaseModel):
             "latitude":    self.latitude,
             "longitude":   self.longitude,
             "owner_id":    self.owner_id,
+            "owner_name":  owner_name,
             "amenities":   [{"id": a.id, "name": a.name} for a in self.amenities],
         })
         return base_dict
