@@ -23,6 +23,7 @@ def review_to_dict(review):
         "id":       review.id,
         "text":     review.text,
         "rating":   review.rating,
+        "user_name": f"{review.user.first_name} {review.user.last_name}" if hasattr(review, "user") and review.user else "Anonymous",
         "user_id":  getattr(review, "user_id",  None),
         "place_id": getattr(review, "place_id", None),
     }
@@ -54,9 +55,6 @@ class ReviewList(Resource):
         owner_id = getattr(place, "owner_id", None)
         if owner_id and owner_id == current_user_id:
             return {"error": "Cannot review your own place"}, 403
-
-        if facade.get_review_by_user_and_place(current_user_id, place_id):
-            return {"error": "You have already reviewed this place"}, 403
 
         review_data["user_id"] = current_user_id
         try:

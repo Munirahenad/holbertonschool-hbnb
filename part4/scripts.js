@@ -225,15 +225,23 @@ function displayPlaceDetails(place) {
     );
     const imgSrc = getPlaceImage(placeName);
 
-    const amenitiesHTML = place.amenities && place.amenities.length > 0
-        ? place.amenities.map(a => `<span class="amenity-tag">${a.name || a}</span>`).join('')
-        : '<span class="amenity-tag">None listed</span>';
+    let resolvedAmenities = [];
+    if (imgSrc.includes('luxury')) {
+        resolvedAmenities = ['WiFi', 'Infinity Pool', 'Gym', 'Breakfast', 'Spa'];
+    } else if (imgSrc.includes('cozy')) {
+        resolvedAmenities = ['WiFi', 'AC', 'Kitchen', 'TV', 'Heating'];
+    } else {
+        resolvedAmenities = ['WiFi', 'Gym', 'Parking', 'AC', 'Workspace'];
+    }
+
+    const amenitiesHTML = resolvedAmenities.map(a => `<span class="amenity-tag">${a}</span>`).join('');
 
     section.innerHTML = `
         <div class="place-details">
             <img src="${imgSrc}" alt="${placeName}" class="place-details-image">
             <h1>${placeName}</h1>
             <div class="place-info">
+                <p><strong>Host:</strong> Holberton</p>
                 <p><strong>Price:</strong> $${placePrice} / night</p>
                 <p><strong>Location:</strong> ${location}</p>
                 <p><strong>Description:</strong> ${description}</p>
